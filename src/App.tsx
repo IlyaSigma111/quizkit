@@ -87,6 +87,7 @@ function App() {
   const [currentStyle, setCurrentStyle] = useState('editorial')
   const [darkMode, setDarkMode] = useState(false)
   const [isFullscreen, setIsFullscreen] = useState(false)
+  const [scale, setScale] = useState(100)
   const [prevPage, setPrevPage] = useState<Page | null>(null)
   const [activeSessions, setActiveSessions] = useState<GameSession[]>([])
   const [jeopardyTemplate, setJeopardyTemplate] = useState<any>(null)
@@ -211,6 +212,11 @@ function App() {
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/></svg>
           )}
         </button>
+        <div className="zoom-controls">
+          <button className="btn-zoom" onClick={() => setScale(s => Math.max(50, s - 10))} title="Уменьшить">−</button>
+          <span className="zoom-value">{scale}%</span>
+          <button className="btn-zoom" onClick={() => setScale(s => Math.min(200, s + 10))} title="Увеличить">+</button>
+        </div>
         <button className="btn-settings" onClick={() => { setPrevPage(page); setPage('settings') }} title="Настройки">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
         </button>
@@ -232,7 +238,7 @@ function App() {
         </div>
       )}
 
-      <main className="app-main">
+      <main className="app-main" style={{ '--scale': scale / 100 } as React.CSSProperties}>
         {page === 'dashboard' && (
           <Dashboard
             onEditQuiz={(id) => { setEditQuizId(id); setPage('builder') }}

@@ -64,8 +64,12 @@ body{font-family:'Outfit','Work Sans',-apple-system,BlinkMacSystemFont,'Segoe UI
 .dot{width:8px;height:8px;border-radius:50%;background:var(--success);box-shadow:0 0 8px var(--success-glow)}
 .btn-settings,.btn-fullscreen{background:var(--bg-input);border:none;cursor:pointer;padding:8px;border-radius:8px;transition:all .2s;line-height:1;color:var(--text-secondary);border:1px solid var(--border)}
 .btn-settings:hover,.btn-fullscreen:hover{background:var(--primary-glow);color:var(--primary);border-color:var(--primary)}
+.zoom-controls{display:flex;align-items:center;gap:4px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;padding:2px}
+.btn-zoom{background:none;border:none;cursor:pointer;color:var(--text-secondary);font-size:16px;font-weight:700;width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:6px;transition:all .2s;font-family:inherit;line-height:1}
+.btn-zoom:hover{background:var(--primary-glow);color:var(--primary)}
+.zoom-value{font-size:11px;font-weight:600;color:var(--text-secondary);min-width:32px;text-align:center;user-select:none}
 
-.app-main{flex:1;display:flex;flex-direction:column;animation:fadeIn .25s ease}
+.app-main{flex:1;display:flex;flex-direction:column;animation:fadeIn .25s ease;zoom:var(--scale,1)}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
 .resume-banner{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 20px;margin-bottom:16px;background:var(--primary-glow);border:1px solid var(--primary);border-radius:var(--radius);font-size:13px;flex-wrap:wrap}
