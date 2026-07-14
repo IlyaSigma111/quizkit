@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { Dashboard } from './pages/Dashboard'
 import { QuizBuilder } from './pages/QuizBuilder'
 import { GameHost } from './pages/GameHost'
@@ -87,6 +87,7 @@ function App() {
   const [currentStyle, setCurrentStyle] = useState('editorial')
   const [darkMode, setDarkMode] = useState(false)
   const [isFullscreen, setIsFullscreen] = useState(false)
+  const [scale, setScale] = useState(100)
   const [prevPage, setPrevPage] = useState<Page | null>(null)
   const [activeSessions, setActiveSessions] = useState<GameSession[]>([])
   const [jeopardyTemplate, setJeopardyTemplate] = useState<any>(null)
@@ -109,7 +110,7 @@ function App() {
   function handleCatalogImport(title: string, description: string, questions: any[], tag: string) {
     const id = crypto.randomUUID?.() || Math.random().toString(36).slice(2)
     const colors = ['#FF4444','#4488FF','#FFBB33','#44CC44']
-    const shapes = ['△','◇','○','☆']
+    const shapes = ['тЦ│','тЧЗ','тЧЛ','тШЖ']
     const now = new Date().toISOString()
     const quiz: Quiz = {
       id, title, description, created_at: now, tags: [tag],
@@ -123,7 +124,7 @@ function App() {
           text: a.text,
           is_correct: a.is_correct,
           color: colors[ai] || '#666',
-          shape: shapes[ai] || '●',
+          shape: shapes[ai] || 'тЧП',
         }))
       }))
     }
@@ -190,49 +191,54 @@ function App() {
         <div className="header-left">
             <h1 className="app-logo" onClick={() => { setPage('dashboard'); setEditQuizId(null); setGamePin(null) }}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style={{width:22,height:22,verticalAlign:'middle',marginRight:6}}><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-              ИльЯкласс
+              ╨Ш╨╗╤М╨п╨║╨╗╨░╤Б╤Б
             </h1>
-          <span className="app-subtitle">Интерактивные викторины</span>
+          <span className="app-subtitle">╨Ш╨╜╤В╨╡╤А╨░╨║╤В╨╕╨▓╨╜╤Л╨╡ ╨▓╨╕╨║╤В╨╛╤А╨╕╨╜╤Л</span>
         </div>
         {serverInfo && (
-          <div className="server-info" onClick={() => setShowIp(!showIp)} style={{ cursor: 'pointer' }} title={showIp ? 'Скрыть' : 'Показать IP'}>
+          <div className="server-info" onClick={() => setShowIp(!showIp)} style={{ cursor: 'pointer' }} title={showIp ? '╨б╨║╤А╤Л╤В╤М' : '╨Я╨╛╨║╨░╨╖╨░╤В╤М IP'}>
             <span className="dot" />
             {showIp ? (
               <span>{serverInfo.ip}:{serverInfo.port}</span>
             ) : (
-              <span>Сервер: ••••</span>
+              <span>╨б╨╡╤А╨▓╨╡╤А: тАвтАвтАвтАв</span>
             )}
           </div>
         )}
-        <button className="btn-fullscreen" onClick={toggleFullscreen} title={isFullscreen ? 'Выйти из полноэкранного режима' : 'Полноэкранный режим'}>
+        <button className="btn-fullscreen" onClick={toggleFullscreen} title={isFullscreen ? '╨Т╤Л╨╣╤В╨╕ ╨╕╨╖ ╨┐╨╛╨╗╨╜╨╛╤Н╨║╤А╨░╨╜╨╜╨╛╨│╨╛ ╤А╨╡╨╢╨╕╨╝╨░' : '╨Я╨╛╨╗╨╜╨╛╤Н╨║╤А╨░╨╜╨╜╤Л╨╣ ╤А╨╡╨╢╨╕╨╝'}>
           {isFullscreen ? (
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M8 3v3a2 2 0 0 1-2 2H3"/><path d="M21 8h-3a2 2 0 0 1-2-2V3"/><path d="M3 16h3a2 2 0 0 1 2 2v3"/><path d="M16 21v-3a2 2 0 0 1 2-2h3"/></svg>
           ) : (
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/></svg>
           )}
         </button>
-        <button className="btn-settings" onClick={() => { setPrevPage(page); setPage('settings') }} title="Настройки">
+        <div className="zoom-controls">
+          <button className="btn-zoom" onClick={() => setScale(s => Math.max(50, s - 10))} title="╨г╨╝╨╡╨╜╤М╤И╨╕╤В╤М">тИТ</button>
+          <span className="zoom-value">{scale}%</span>
+          <button className="btn-zoom" onClick={() => setScale(s => Math.min(200, s + 10))} title="╨г╨▓╨╡╨╗╨╕╤З╨╕╤В╤М">+</button>
+        </div>
+        <button className="btn-settings" onClick={() => { setPrevPage(page); setPage('settings') }} title="╨Э╨░╤Б╤В╤А╨╛╨╣╨║╨╕">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
         </button>
       </header>
 
       {activeSessions.length > 0 && (
         <div className="resume-banner">
-          <span>Обнаружена активная игра. Продолжить с того же места?</span>
+          <span>╨Ю╨▒╨╜╨░╤А╤Г╨╢╨╡╨╜╨░ ╨░╨║╤В╨╕╨▓╨╜╨░╤П ╨╕╨│╤А╨░. ╨Я╤А╨╛╨┤╨╛╨╗╨╢╨╕╤В╤М ╤Б ╤В╨╛╨│╨╛ ╨╢╨╡ ╨╝╨╡╤Б╤В╨░?</span>
           <div className="resume-banner-actions">
             {activeSessions.map(s => (
               <button key={s.pin} className="btn btn-primary" onClick={() => { setGamePin(s.pin); setPage('game') }}>
-                Игра #{s.pin} ({s.mode === 'live' ? 'Викторина' : 'Проверочная работа'})
+                ╨Ш╨│╤А╨░ #{s.pin} ({s.mode === 'live' ? '╨Т╨╕╨║╤В╨╛╤А╨╕╨╜╨░' : '╨Я╤А╨╛╨▓╨╡╤А╨╛╤З╨╜╨░╤П ╤А╨░╨▒╨╛╤В╨░'})
               </button>
             ))}
             <button className="btn" onClick={() => {
               activeSessions.forEach(s => dismissSession(s.pin))
-            }}>Закрыть</button>
+            }}>╨Ч╨░╨║╤А╤Л╤В╤М</button>
           </div>
         </div>
       )}
 
-      <main className="app-main">
+      <main className="app-main" style={{ '--scale': scale / 100 } as React.CSSProperties}>
         {page === 'dashboard' && (
           <Dashboard
             onEditQuiz={(id) => { setEditQuizId(id); setPage('builder') }}
@@ -314,10 +320,10 @@ function App() {
             <p style={{ textAlign: 'center', color: 'var(--text-secondary)', fontSize: 14, lineHeight: 1.5 }}>{jeopardySetup.description}</p>
             <div style={{ height: 1, background: 'var(--border)', width: '100%' }} />
             <button className="btn btn-primary" style={{ textAlign: 'center', fontSize: 18, padding: '16px 24px' }} onClick={handleStartJeopardyLocal}>
-              🖥️ Играть
+              ЁЯЦея╕П ╨Ш╨│╤А╨░╤В╤М
             </button>
             <button className="btn" style={{ textAlign: 'center', marginTop: 4 }} onClick={() => setJeopardySetup(null)}>
-              Отмена
+              ╨Ю╤В╨╝╨╡╨╜╨░
             </button>
           </div>
         </div>
