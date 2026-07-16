@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import type { Player, ServerInfo, GameSession } from '../App'
 import { invoke } from '@tauri-apps/api/core'
 import { QRCodeSVG } from 'qrcode.react'
+import { playCountdown } from '../lib/sounds'
 
 function qrColor() {
   return getComputedStyle(document.documentElement).getPropertyValue('--text').trim() || '#e8e8f0'
@@ -107,6 +108,7 @@ export function GameHost({ pin, serverInfo, onBack }: Props) {
           setLiveQuestion(null)
           setRoundResults(null)
           startCountdown(msg.countdown || 3)
+          playCountdown()
           break
 
         case 'question':

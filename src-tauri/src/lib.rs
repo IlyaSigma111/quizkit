@@ -62,7 +62,6 @@ async fn start_game(
     let game_mode = match mode.as_str() {
         "test" => GameMode::Test,
         "live" => GameMode::LiveQuiz,
-        "jeopardy" => GameMode::Jeopardy,
         _ => return Err("Неверный режим".to_string()),
     };
 
@@ -86,72 +85,6 @@ async fn start_game(
         player_progress: std::collections::HashMap::new(),
         question_start_time: 0,
         server_port: 0,
-        jeopardy_data: None,
-        jeopardy_state: None,
-    };
-
-    state.0.sessions.write().await.insert(pin.clone(), session.clone());
-    state.0.ws_senders.write().await.insert(pin.clone(), Vec::new());
-    state.0.host_senders.write().await.insert(pin.clone(), Vec::new());
-    state.0.ws_player_map.write().await.insert(pin.clone(), HashMap::new());
-
-    storage::save_active_session(&session).ok();
-
-    Ok(session)
-}
-
-#[tauri::command]
-async fn start_jeopardy_session(
-    data: JeopardySessionData,
-    board_mode: String,
-    state: tauri::State<'_, AppStateWrapper>,
-) -> Result<GameSession, String> {
-    let pin = format!("{:06}", rand::random::<u32>() % 1000000);
-
-    let board_mode_enum = match board_mode.as_str() {
-        "auto" => JeopardyBoardMode::Auto,
-        _ => JeopardyBoardMode::Manual,
-    };
-
-    let session = GameSession {
-        pin: pin.clone(),
-        quiz: Quiz {
-            id: "jeopardy".to_string(),
-            title: data.title.clone(),
-            description: data.description.clone(),
-            questions: Vec::new(),
-            created_at: format!("{}", SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_millis()),
-            tags: vec!["jeopardy".to_string()],
-            total_time_seconds: 0,
-        },
-        status: GameStatus::Lobby,
-        mode: GameMode::Jeopardy,
-        advance: AdvanceMode::Manual,
-        current_question_index: 0,
-        players: Vec::new(),
-        answers: Vec::new(),
-        player_progress: std::collections::HashMap::new(),
-        question_start_time: 0,
-        server_port: 0,
-        jeopardy_data: Some(data),
-        jeopardy_state: Some(JeopardyState {
-            board_mode: board_mode_enum,
-            turn_order: Vec::new(),
-            current_turn_idx: 0,
-            answered_cells: Vec::new(),
-            active_cell: None,
-            stealing: false,
-            steal_idx: 0,
-            pending_answer: None,
-            scores: std::collections::HashMap::new(),
-            final_wagers: std::collections::HashMap::new(),
-            final_answers: std::collections::HashMap::new(),
-            final_correct: std::collections::HashMap::new(),
-            reveal_places: Vec::new(),
-            reveal_idx: 0,
-            final_active: false,
-            final_player_idx: 0,
-        }),
     };
 
     state.0.sessions.write().await.insert(pin.clone(), session.clone());
@@ -245,7 +178,6 @@ async fn export_results(pin: String, state: tauri::State<'_, AppStateWrapper>) -
         let mode_label = match session.mode {
             game::GameMode::Test => "Проверочная работа",
             game::GameMode::LiveQuiz => "Викторина",
-            game::GameMode::Jeopardy => "Своя игра",
         }.to_string();
         (players, title, mode_label)
     };
@@ -280,7 +212,6 @@ pub fn run() {
             get_quiz,
             delete_quiz,
             start_game,
-            start_jeopardy_session,
             get_game_state,
             get_server_info,
             get_settings,

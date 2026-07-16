@@ -6,18 +6,6 @@ type CatalogQuestion = {
   answers: Array<{ text: string; is_correct: boolean }>
 }
 
-type JeopardyQuestion = {
-  points: number
-  text: string
-  answer: string
-}
-
-type JeopardyCategory = {
-  name: string
-  emoji: string
-  questions: JeopardyQuestion[]
-}
-
 type CatalogItem = {
   id: string
   title: string
@@ -27,23 +15,20 @@ type CatalogItem = {
   category: string
   total_time_seconds: number
   questions?: CatalogQuestion[]
-  type?: string
-  categories?: JeopardyCategory[]
 }
 
 type Props = {
   onImport: (title: string, description: string, questions: CatalogQuestion[], tag: string) => void
   onBack: () => void
-  onPlayJeopardy?: (template: CatalogItem) => void
   onPlayCipher?: (template: CatalogItem) => void
   onPlayCreateOwn?: () => void
 }
 
-const CATEGORIES = ['Все', 'Своя игра', 'Математика', 'Русский язык', 'История', 'География', 'Биология', 'Физика', 'Химия', 'Литература', 'Английский язык', 'Праздники', 'Экология', 'Культура и искусство', 'Кино', 'Спорт', 'Музыка', 'Общие знания', 'Правда и Ложь']
-const TAGS = ['Все', 'Своя игра', 'Проверочная работа', 'Викторина', 'Правда и Ложь']
+const CATEGORIES = ['Все', 'Математика', 'Русский язык', 'История', 'География', 'Биология', 'Физика', 'Химия', 'Литература', 'Английский язык', 'Праздники', 'Экология', 'Культура и искусство', 'Кино', 'Спорт', 'Музыка', 'Общие знания', 'Правда и Ложь']
+const TAGS = ['Все', 'Проверочная работа', 'Викторина', 'Правда и Ложь']
 
 const CATEGORY_EMOJIS: Record<string, string> = {
-  'Своя игра': '💰', 'Математика': '🔢', 'Русский язык': '📖', 'История': '🏛️', 'География': '🌍',
+  'Математика': '🔢', 'Русский язык': '📖', 'История': '🏛️', 'География': '🌍',
   'Биология': '🧬', 'Физика': '⚡', 'Химия': '🧪', 'Литература': '📚',
   'Английский язык': '🇬🇧', 'Праздники': '🎉', 'Экология': '🌱',
   'Культура и искусство': '🎭', 'Кино': '🎬', 'Спорт': '⚽', 'Музыка': '🎵',
@@ -57,7 +42,7 @@ function saveFavorites(fav: Set<string>) {
   localStorage.setItem('catalogFavorites', JSON.stringify([...fav]))
 }
 
-export function QuizCatalog({ onImport, onBack, onPlayJeopardy, onPlayCipher, onPlayCreateOwn }: Props) {
+export function QuizCatalog({ onImport, onBack, onPlayCipher, onPlayCreateOwn }: Props) {
   const [items, setItems] = useState<CatalogItem[]>([])
   const [search, setSearch] = useState('')
   const [catFilter, setCatFilter] = useState('Все')
@@ -139,20 +124,15 @@ export function QuizCatalog({ onImport, onBack, onPlayJeopardy, onPlayCipher, on
               <h3>{item.title}</h3>
               <p>{item.description}</p>
               <div className="catalog-card-meta">
-                <span className={`tag tag-${item.type === 'jeopardy' ? 'quiz' : item.tag === 'Правда и Ложь' ? 'tf' : item.tag === 'Викторина' ? 'quiz' : 'test'}`}>
-                  {item.type === 'jeopardy' ? '💰 Своя игра' : item.tag}
+                <span className={`tag tag-${item.tag === 'Правда и Ложь' ? 'tf' : item.tag === 'Викторина' ? 'quiz' : 'test'}`}>
+                  {item.tag}
                 </span>
                 {item.questions && <span className="catalog-card-questions">{item.questions.length} вопросов</span>}
-                {item.categories && <span className="catalog-card-questions">{item.categories.length} категорий</span>}
               </div>
-              {item.type === 'jeopardy' && onPlayJeopardy ? (
-                <button className="btn btn-play btn-sm" onClick={() => onPlayJeopardy(item)}>▶ Своя игра</button>
-              ) : (
-                <div style={{ display: 'flex', gap: 6 }}>
-                  <button className="btn btn-primary btn-sm" onClick={() => onImport(item.title, item.description, item.questions!, item.tag)}>📝 Тест</button>
-                  {onPlayCipher && <button className="btn btn-secondary btn-sm" onClick={() => onPlayCipher(item)}>🔢 Шифр</button>}
-                </div>
-              )}
+              <div style={{ display: 'flex', gap: 6 }}>
+                <button className="btn btn-primary btn-sm" onClick={() => onImport(item.title, item.description, item.questions!, item.tag)}>📝 Тест</button>
+                {onPlayCipher && <button className="btn btn-secondary btn-sm" onClick={() => onPlayCipher(item)}>🔢 Шифр</button>}
+              </div>
             </div>
           </div>
         ))}

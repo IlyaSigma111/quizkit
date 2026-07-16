@@ -4,10 +4,9 @@ import { QuizBuilder } from './pages/QuizBuilder'
 import { GameHost } from './pages/GameHost'
 import { Settings } from './pages/Settings'
 import { QuizCatalog } from './pages/QuizCatalog'
-import { JeopardyBoard } from './pages/JeopardyBoard'
-import { JeopardyHost } from './pages/JeopardyHost'
 import { CipherGame } from './pages/CipherGame'
 import { CreateOwnQuiz } from './pages/CreateOwnQuiz'
+import { Ecosystem } from './pages/Ecosystem'
 import { invoke } from '@tauri-apps/api/core'
 import './styles/globals.css'
 
@@ -72,14 +71,14 @@ export type AppSettings = {
   dark_mode: boolean
 }
 
-type Page = 'dashboard' | 'builder' | 'game' | 'settings' | 'catalog' | 'jeopardy' | 'jeopardy-host' | 'cipher' | 'create-own'
+type Page = 'ecosystem' | 'dashboard' | 'builder' | 'game' | 'settings' | 'catalog' | 'cipher' | 'create-own'
 
 function applyStyle(style: string, dark: boolean) {
   document.documentElement.className = `style-${style}${dark ? ' dark' : ''}`
 }
 
 function App() {
-  const [page, setPage] = useState<Page>('dashboard')
+  const [page, setPage] = useState<Page>('ecosystem')
   const [editQuizId, setEditQuizId] = useState<string | null>(null)
   const [gamePin, setGamePin] = useState<string | null>(null)
   const [serverInfo, setServerInfo] = useState<ServerInfo | null>(null)
@@ -90,9 +89,6 @@ function App() {
   const [scale, setScale] = useState(100)
   const [prevPage, setPrevPage] = useState<Page | null>(null)
   const [activeSessions, setActiveSessions] = useState<GameSession[]>([])
-  const [jeopardyTemplate, setJeopardyTemplate] = useState<any>(null)
-  const [jeopardyHostPin, setJeopardyHostPin] = useState<string | null>(null)
-  const [jeopardySetup, setJeopardySetup] = useState<any>(null)
   const [cipherTemplate, setCipherTemplate] = useState<any>(null)
 
   useEffect(() => {
@@ -132,16 +128,6 @@ function App() {
       setEditQuizId(id)
       setPage('builder')
     }).catch(console.error)
-  }
-
-  function handlePlayJeopardy(template: any) {
-    setJeopardySetup(template)
-  }
-
-  async function handleStartJeopardyLocal() {
-    setJeopardyTemplate(jeopardySetup)
-    setJeopardySetup(null)
-    setPage('jeopardy')
   }
 
   function dismissSession(pin: string) {
@@ -189,7 +175,7 @@ function App() {
     <div className="app">
       <header className="app-header">
         <div className="header-left">
-            <h1 className="app-logo" onClick={() => { setPage('dashboard'); setEditQuizId(null); setGamePin(null) }}>
+              <h1 className="app-logo" onClick={() => { setPage('ecosystem'); setEditQuizId(null); setGamePin(null) }}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style={{width:22,height:22,verticalAlign:'middle',marginRight:6}}><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
               ИльЯкласс
             </h1>
@@ -239,6 +225,11 @@ function App() {
       )}
 
       <main className="app-main" style={{ '--scale': scale / 100 } as React.CSSProperties}>
+        {page === 'ecosystem' && (
+          <Ecosystem
+            onNavigate={(pg) => { if (pg === 'dashboard') setPage('dashboard') }}
+          />
+        )}
         {page === 'dashboard' && (
           <Dashboard
             onEditQuiz={(id) => { setEditQuizId(id); setPage('builder') }}
@@ -281,22 +272,8 @@ function App() {
           <QuizCatalog
             onImport={handleCatalogImport}
             onBack={() => setPage('dashboard')}
-            onPlayJeopardy={handlePlayJeopardy}
             onPlayCipher={(template) => { setCipherTemplate(template); setPage('cipher') }}
             onPlayCreateOwn={() => setPage('create-own')}
-          />
-        )}
-        {page === 'jeopardy' && jeopardyTemplate && (
-          <JeopardyBoard
-            template={jeopardyTemplate}
-            onBack={() => { setJeopardyTemplate(null); setPage('catalog') }}
-          />
-        )}
-        {page === 'jeopardy-host' && jeopardyHostPin && (
-          <JeopardyHost
-            pin={jeopardyHostPin}
-            serverInfo={serverInfo}
-            onBack={() => { setJeopardyHostPin(null); setPage('catalog') }}
           />
         )}
         {page === 'cipher' && cipherTemplate && (
@@ -312,22 +289,6 @@ function App() {
         )}
       </main>
 
-      {/* Jeopardy setup modal */}
-      {jeopardySetup && (
-        <div className="modal-overlay" onClick={() => setJeopardySetup(null)}>
-          <div className="glass-card" style={{ maxWidth: 420, width: '90%', padding: 28, display: 'flex', flexDirection: 'column', gap: 16, borderRadius: 16 }} onClick={e => e.stopPropagation()}>
-            <h2 style={{ textAlign: 'center' }}>{jeopardySetup.emoji} {jeopardySetup.title}</h2>
-            <p style={{ textAlign: 'center', color: 'var(--text-secondary)', fontSize: 14, lineHeight: 1.5 }}>{jeopardySetup.description}</p>
-            <div style={{ height: 1, background: 'var(--border)', width: '100%' }} />
-            <button className="btn btn-primary" style={{ textAlign: 'center', fontSize: 18, padding: '16px 24px' }} onClick={handleStartJeopardyLocal}>
-              🖥️ Играть
-            </button>
-            <button className="btn" style={{ textAlign: 'center', marginTop: 4 }} onClick={() => setJeopardySetup(null)}>
-              Отмена
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   )
 }
