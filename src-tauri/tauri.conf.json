@@ -35,6 +35,7 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ],
+    "resources": ["../assets/apps/*"],
     "windows": {
       "wix": {
         "language": "ru-RU"

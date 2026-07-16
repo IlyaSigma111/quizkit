@@ -9,6 +9,7 @@ use std::collections::HashMap;
 use game::*;
 use std::sync::Arc;
 use std::time::{SystemTime, UNIX_EPOCH};
+use tauri::Manager;
 
 struct AppStateWrapper(Arc<AppState>);
 
@@ -197,6 +198,29 @@ async fn export_results(pin: String, state: tauri::State<'_, AppStateWrapper>) -
     Ok(path)
 }
 
+#[tauri::command]
+fn download_app(app: String, app_handle: tauri::AppHandle) -> Result<String, String> {
+    let exe_name = format!("{}.exe", app);
+
+    // Try resource dir first (release mode), fallback to source tree (dev mode)
+    let source_path = if let Ok(dir) = app_handle.path().resource_dir() {
+        dir.join("assets/apps").join(&exe_name)
+    } else {
+        std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("../assets/apps")
+            .join(&exe_name)
+    };
+
+    let downloads = std::env::var("USERPROFILE")
+        .map_err(|_| "USERPROFILE not set".to_string())?;
+    let dest = std::path::Path::new(&downloads).join("Downloads").join(&exe_name);
+
+    std::fs::copy(&source_path, &dest)
+        .map_err(|e| format!("Ошибка копирования: {} (искал {})", e, source_path.display()))?;
+
+    Ok(dest.to_string_lossy().to_string())
+}
+
 // ─── App Entry ───
 
 pub fn run() {
@@ -221,6 +245,7 @@ pub fn run() {
             clear_active_session,
             broadcast_style,
             get_app_info,
+            download_app,
         ]);
 
     #[cfg(desktop)]

@@ -1,3 +1,6 @@
+import { invoke } from '@tauri-apps/api/core'
+import { useState } from 'react'
+
 type AppEntry = {
   id: string
   title: string
@@ -5,9 +8,9 @@ type AppEntry = {
   emoji: string
   gradient: string
   badge?: string
-  action: 'navigate' | 'external'
+  action: 'navigate' | 'download' | 'launch'
   path?: string
-  url?: string
+  dl_key?: string
 }
 
 const APPS: AppEntry[] = [
@@ -17,7 +20,7 @@ const APPS: AppEntry[] = [
     description: 'Интерактивные викторины и проверочные работы. Ученики отвечают с телефона — учитель видит результаты в реальном времени.',
     emoji: '🎯',
     gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    badge: 'Доступно',
+    badge: 'Открыть',
     action: 'navigate',
     path: 'dashboard',
   },
@@ -27,9 +30,9 @@ const APPS: AppEntry[] = [
     description: 'Классическая Jeopardy на одном компьютере. Выбирайте категории, отвечайте на вопросы и соревнуйтесь с друзьями.',
     emoji: '💰',
     gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-    badge: 'Скоро',
-    action: 'external',
-    url: 'https://ilyasigma111.github.io/svoya-igra',
+    badge: 'Скачать',
+    action: 'download',
+    dl_key: 'svoya-igra',
   },
   {
     id: 'millionaire',
@@ -37,19 +40,9 @@ const APPS: AppEntry[] = [
     description: 'Легендарная игра с 15 вопросами, несгораемыми суммами и подсказками. Играйте вдвоём за одним компьютером.',
     emoji: '💎',
     gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-    badge: 'Скоро',
-    action: 'external',
-    url: 'https://ilyasigma111.github.io/millionaire',
-  },
-  {
-    id: 'ilya-sdal',
-    title: 'ИльЯСдал',
-    description: 'Сбор домашних заданий. Ученики отправляют фото/файлы — учитель скачивает одним архивом.',
-    emoji: '📚',
-    gradient: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
-    badge: 'v0.1.0',
-    action: 'external',
-    url: 'https://ilyasigma111.github.io/ilya-sdal',
+    badge: 'Скачать',
+    action: 'download',
+    dl_key: 'millionaire',
   },
 ]
 
@@ -58,11 +51,19 @@ type Props = {
 }
 
 export function Ecosystem({ onNavigate }: Props) {
-  const handleClick = (app: AppEntry) => {
+  const [status, setStatus] = useState<Record<string, string>>({})
+
+  const handleClick = async (app: AppEntry) => {
     if (app.action === 'navigate' && app.path) {
       onNavigate(app.path)
-    } else if (app.action === 'external' && app.url) {
-      window.open(app.url, '_blank')
+    } else if (app.action === 'download' && app.dl_key) {
+      setStatus(prev => ({ ...prev, [app.id]: 'Скачивание...' }))
+      try {
+        const path = await invoke<string>('download_app', { app: app.dl_key })
+        setStatus(prev => ({ ...prev, [app.id]: `Сохранено: ${path}` }))
+      } catch (e) {
+        setStatus(prev => ({ ...prev, [app.id]: `Ошибка: ${e}` }))
+      }
     }
   }
 
@@ -99,7 +100,11 @@ export function Ecosystem({ onNavigate }: Props) {
               <span className="ecosystem-card-emoji">{app.emoji}</span>
               <h3 className="ecosystem-card-title">{app.title}</h3>
               <p className="ecosystem-card-desc">{app.description}</p>
-              {app.badge && <span className="ecosystem-card-badge">{app.badge}</span>}
+              {app.badge && (
+                <span className="ecosystem-card-badge">
+                  {status[app.id] || app.badge}
+                </span>
+              )}
             </div>
           </div>
         ))}
