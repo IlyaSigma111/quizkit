@@ -6,7 +6,7 @@ import { Settings } from './pages/Settings'
 import { QuizCatalog } from './pages/QuizCatalog'
 import { CipherGame } from './pages/CipherGame'
 import { CreateOwnQuiz } from './pages/CreateOwnQuiz'
-import { Ecosystem } from './pages/Ecosystem'
+
 import { invoke } from '@tauri-apps/api/core'
 import './styles/globals.css'
 
@@ -71,14 +71,14 @@ export type AppSettings = {
   dark_mode: boolean
 }
 
-type Page = 'ecosystem' | 'dashboard' | 'builder' | 'game' | 'settings' | 'catalog' | 'cipher' | 'create-own'
+type Page = 'dashboard' | 'builder' | 'game' | 'settings' | 'catalog' | 'cipher' | 'create-own'
 
 function applyStyle(style: string, dark: boolean) {
   document.documentElement.className = `style-${style}${dark ? ' dark' : ''}`
 }
 
 function App() {
-  const [page, setPage] = useState<Page>('ecosystem')
+  const [page, setPage] = useState<Page>('dashboard')
   const [editQuizId, setEditQuizId] = useState<string | null>(null)
   const [gamePin, setGamePin] = useState<string | null>(null)
   const [serverInfo, setServerInfo] = useState<ServerInfo | null>(null)
@@ -175,7 +175,7 @@ function App() {
     <div className="app">
       <header className="app-header">
         <div className="header-left">
-              <h1 className="app-logo" onClick={() => { setPage('ecosystem'); setEditQuizId(null); setGamePin(null) }}>
+              <h1 className="app-logo" onClick={() => { setPage('dashboard'); setEditQuizId(null); setGamePin(null) }}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style={{width:22,height:22,verticalAlign:'middle',marginRight:6}}><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
               ИльЯкласс
             </h1>
@@ -225,11 +225,6 @@ function App() {
       )}
 
       <main className="app-main" style={{ '--scale': scale / 100 } as React.CSSProperties}>
-        {page === 'ecosystem' && (
-          <Ecosystem
-            onNavigate={(pg) => { if (pg === 'dashboard') setPage('dashboard') }}
-          />
-        )}
         {page === 'dashboard' && (
           <Dashboard
             onEditQuiz={(id) => { setEditQuizId(id); setPage('builder') }}

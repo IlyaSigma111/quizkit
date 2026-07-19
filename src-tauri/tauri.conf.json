@@ -36,9 +36,21 @@
       "icons/icon.ico"
     ],
     "resources": ["../assets/apps/*"],
+    "licenseFile": "installer-assets/license.txt",
     "windows": {
       "wix": {
         "language": "ru-RU"
+      },
+      "nsis": {
+        "installMode": "currentUser",
+        "languages": ["Russian"],
+        "installerIcon": "icons/icon.ico",
+        "uninstallerIcon": "icons/icon.ico",
+        "sidebarImage": "installer-assets/sidebar.bmp",
+        "headerImage": "installer-assets/header.bmp",
+        "customLanguageFiles": {
+          "Russian": "installer-assets/custom-lang.nsh"
+        }
       }
     }
   }
