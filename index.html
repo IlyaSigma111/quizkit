@@ -117,6 +117,18 @@ section{padding:70px 0}
 .preview-ilyasdal .ps-end .ps-icon{font-size:18px}
 .preview-ilyasdal .ps-sub{font-size:10px;opacity:.6;margin-top:2px}
 
+/* Krokodil — word guessing game */
+.preview-krokodil{background:linear-gradient(135deg,#22c55e,#10b981)}
+.preview-krokodil .pkro-word{font-size:28px;font-weight:800;letter-spacing:1px;margin-bottom:4px}
+.preview-krokodil .pkro-hint{font-size:11px;opacity:.7;margin-bottom:10px}
+.preview-krokodil .pkro-timer{font-size:32px;font-weight:800;margin-bottom:8px}
+.preview-krokodil .pkro-input{display:flex;align-items:center;gap:8px;width:100%;max-width:260px}
+.preview-krokodil .pkro-input-box{flex:1;padding:8px 14px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);border-radius:8px;color:#fff;font-size:13px;font-weight:600}
+.preview-krokodil .pkro-input-box::placeholder{color:rgba(255,255,255,.5)}
+.preview-krokodil .pkro-send{padding:8px 16px;background:#fff;color:#10b981;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer}
+.preview-krokodil .pkro-players{display:flex;gap:6px;margin-top:8px}
+.preview-krokodil .pkro-player{padding:4px 10px;background:rgba(255,255,255,.15);border-radius:100px;font-size:10px;font-weight:600}
+
 #faq{background:#f5f3ef}
 .faq-list{max-width:640px}
 .faq-item{border-bottom:1px solid #eee}
@@ -172,7 +184,7 @@ footer a:hover{color:#111}
     <a href="https://github.com/IlyaSigma111" class="btn btn-secondary">Гитхаб →</a>
   </div>
   <div class="hero-stats">
-    <div><span class="num">4</span><span class="lbl">Приложения</span></div>
+    <div><span class="num">5</span><span class="lbl">Приложения</span></div>
     <div><span class="num">1000+</span><span class="lbl">Вопросов</span></div>
     <div><span class="num">100%</span><span class="lbl">Офлайн</span></div>
     <div><span class="num">✓</span><span class="lbl">Открытый код</span></div>
@@ -333,6 +345,42 @@ footer a:hover{color:#111}
             <div class="app-card-dl">
               <a href="https://github.com/IlyaSigma111/ilya-sdal/releases/download/v0.1.0/ilya-sdal.exe" class="app-dl-portable">Портативная</a>
               <a href="https://github.com/IlyaSigma111/ilya-sdal/releases/download/v0.1.0/IlyaSdal_0.1.0_x64-setup.exe" class="app-dl-setup">Установщик</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="app-card">
+      <div class="app-preview preview-krokodil">
+        <div class="app-preview-inner">
+          <div class="pkro-word">🐊 Крокодил</div>
+          <div class="pkro-hint">Угадай слово!</div>
+          <div class="pkro-timer">0:45</div>
+          <div class="pkro-input">
+            <div class="pkro-input-box">Введите слово...</div>
+            <div class="pkro-send">→</div>
+          </div>
+          <div class="pkro-players">
+            <span class="pkro-player">Аня</span>
+            <span class="pkro-player">Миша</span>
+            <span class="pkro-player">Даша</span>
+          </div>
+        </div>
+      </div>
+      <div class="app-card-body">
+        <div class="app-card-name"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="vertical-align:-4px;margin-right:4px"><path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z"/></svg> Крокодил</div>
+        <div class="app-card-desc">Угадай слово по ассоциации! Учитель показывает слово одному игроку — остальные угадывают. Мультиплеер через QR-код в локальной сети.</div>
+        <div class="app-card-tags">
+          <span class="app-card-tag">Крокодил</span>
+          <span class="app-card-tag">QR-код</span>
+          <span class="app-card-tag">Мультиплеер</span>
+        </div>
+        <div class="app-card-foot">
+          <div class="app-card-row">
+            <span class="app-card-ver">v0.1.0 · <a href="https://github.com/IlyaSigma111/croco">гитхаб →</a></span>
+            <div class="app-card-dl">
+              <a href="https://github.com/IlyaSigma111/croco/releases/download/v0.1.0/_0.1.0_x64-setup.exe" class="app-dl-setup">Установщик</a>
             </div>
           </div>
         </div>
