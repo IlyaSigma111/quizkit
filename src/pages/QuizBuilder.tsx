@@ -34,8 +34,9 @@ function importFromJSON(json: Record<string, unknown>): Quiz {
           return {
             id: makeId(),
             text: String(question.question ?? ''),
-              time_seconds: (question.time_seconds as number) || 20,
-              points: 1000,
+            image: question.image ? String(question.image) : undefined,
+            time_seconds: (question.time_seconds as number) || 20,
+            points: 1000,
             answers: answers.map((a: string, ai: number) => ({
               id: makeId(),
               text: a,
@@ -60,6 +61,7 @@ function exportToJSON(quiz: Quiz): string {
     description: quiz.description,
     questions: quiz.questions.map((q) => ({
       question: q.text,
+      image: q.image,
       answers: q.answers.map((a) => a.text),
       correct: q.answers.findIndex((a) => a.is_correct),
     })),
@@ -283,6 +285,50 @@ export function QuizBuilder({ quizId, onBack, onCreateOwn }: Props) {
               onChange={(e) => updateQuestion(qi, 'text', e.target.value)}
               className="q-text-input"
             />
+            <div className="q-image-upload" style={{ margin: '16px 0' }}>
+              <input
+                type="file"
+                accept="image/*"
+                id={`q-img-${qi}`}
+                style={{ display: 'none' }}
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  const reader = new FileReader();
+                  reader.onload = (ev) => {
+                    updateQuestion(qi, 'image', ev.target?.result);
+                  };
+                  reader.readAsDataURL(file);
+                }}
+              />
+              {!q.image ? (
+                <label htmlFor={`q-img-${qi}`} style={{
+                  display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                  padding: '24px', border: '2px dashed var(--border)', borderRadius: '12px',
+                  background: 'var(--bg)', cursor: 'pointer', color: 'var(--text-secondary)',
+                  transition: 'all 0.2s', gap: '8px'
+                }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.color = 'var(--text)'; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-secondary)'; }}>
+                  <span style={{ fontSize: '24px' }}>🖼️</span>
+                  <span style={{ fontWeight: 600 }}>Добавить картинку к вопросу</span>
+                </label>
+              ) : (
+                <div style={{ position: 'relative', display: 'inline-block', width: '100%', textAlign: 'center', padding: '12px', background: 'var(--bg)', borderRadius: '12px', border: '1px solid var(--border)' }}>
+                  <img src={q.image} alt="preview" style={{ maxHeight: 200, maxWidth: '100%', borderRadius: 8, objectFit: 'contain' }} />
+                  <div style={{ marginTop: 12, display: 'flex', gap: 12, justifyContent: 'center' }}>
+                    <label htmlFor={`q-img-${qi}`} className="btn btn-secondary btn-sm" style={{ cursor: 'pointer' }}>
+                      Заменить
+                    </label>
+                    <button
+                      className="btn btn-danger-sm"
+                      onClick={() => updateQuestion(qi, 'image', undefined)}
+                      title="Удалить картинку"
+                    >Удалить</button>
+                  </div>
+                </div>
+              )}
+            </div>
             <div className="q-options">
               <label>
                 Очки: {q.points}

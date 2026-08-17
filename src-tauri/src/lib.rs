@@ -221,6 +221,11 @@ fn download_app(app: String, app_handle: tauri::AppHandle) -> Result<String, Str
     Ok(dest.to_string_lossy().to_string())
 }
 
+#[tauri::command]
+fn relaunch_app(app: tauri::AppHandle) {
+    app.restart();
+}
+
 // ─── App Entry ───
 
 pub fn run() {
@@ -246,6 +251,7 @@ pub fn run() {
             broadcast_style,
             get_app_info,
             download_app,
+            relaunch_app,
         ]);
 
     #[cfg(desktop)]

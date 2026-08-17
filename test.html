@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест — Скачать ИльЯкласс</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0f172a;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 60px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            font-size: 36px;
+            margin-top: 0;
+            margin-bottom: 12px;
+        }
+        p {
+            color: #94a3b8;
+            font-size: 18px;
+            margin-bottom: 40px;
+        }
+        .btn {
+            display: inline-block;
+            background: #4f46e5;
+            color: white;
+            text-decoration: none;
+            padding: 20px 48px;
+            font-size: 24px;
+            font-weight: 700;
+            border-radius: 100px;
+            transition: all 0.2s;
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.4);
+        }
+        .btn:hover {
+            transform: translateY(-4px);
+            background: #4338ca;
+            box-shadow: 0 16px 30px rgba(79, 70, 229, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ИльЯкласс v0.7.1</h1>
+        <p>Нажмите на кнопку ниже, чтобы скачать последнюю собранную версию.</p>
+        <a href="src-tauri/target/release/bundle/nsis/IlyaKlass_0.7.1_x64-setup.exe" class="btn" download>Скачать .exe</a>
+    </div>
+</body>
+</html>

@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import type { Player, ServerInfo, GameSession } from '../App'
 import { invoke } from '@tauri-apps/api/core'
 import { QRCodeSVG } from 'qrcode.react'
-import { playCountdown } from '../lib/sounds'
+import { playCountdown, playTick } from '../lib/sounds'
 
 function qrColor() {
   return getComputedStyle(document.documentElement).getPropertyValue('--text').trim() || '#e8e8f0'
@@ -40,6 +40,7 @@ type ProgressPlayer = {
 
 type QuestionData = {
   text: string
+  image?: string
   time_seconds: number
   answers: { text: string; color: string; shape: string; index: number }[]
 }
@@ -92,10 +93,19 @@ export function GameHost({ pin, serverInfo, onBack }: Props) {
 
       switch (msg.type) {
         case 'player_joined':
+          playTick()
           setPlayers((prev) => {
             if (prev.find((p) => p.id === msg.player.id)) return prev
             return [...prev, { id: msg.player.id, nickname: msg.player.nickname }]
           })
+          setTimeout(() => {
+            const countEl = document.getElementById('lobby-count-anim')
+            if (countEl) {
+              countEl.classList.remove('count-bump')
+              void countEl.offsetWidth
+              countEl.classList.add('count-bump')
+            }
+          }, 10)
           break
 
         case 'player_left':
@@ -240,53 +250,137 @@ export function GameHost({ pin, serverInfo, onBack }: Props) {
       </div>
 
       {status === 'lobby' && (
-        <div className="lobby-layout">
-          <div className="lobby-players-col">
-            <h2>{
-              mode === 'LiveQuiz'
-                ? 'Викторина'
-                : 'Проверочная работа'
-            }</h2>
-            <div className="player-list lobby-players">
-              <h3>Ученики ({players.length})</h3>
-              {players.length === 0 ? (
-                <p className="wait-hint">Ждём первых учеников...</p>
-              ) : (
-                <div className="player-chips">
-                  {players.map((p) => (
-                    <div key={p.id} className="player-chip">{p.nickname}</div>
-                  ))}
-                </div>
+        <div className="lobby-layout" style={{ flexDirection: 'column', height: '100%', alignItems: 'stretch' }}>
+          <style>{`
+            @keyframes popIn {
+              0% { transform: scale(0.8) translateY(10px); opacity: 0; }
+              50% { transform: scale(1.05) translateY(-2px); opacity: 1; }
+              100% { transform: scale(1) translateY(0); opacity: 1; }
+            }
+            .player-chip {
+              animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+              display: inline-flex;
+              align-items: center;
+              gap: 8px;
+              padding: 14px 28px;
+              background: var(--bg-card);
+              color: var(--text);
+              border-radius: 100px;
+              font-weight: 700;
+              font-size: 22px;
+              box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+              border: 2px solid var(--primary);
+              transition: transform 0.2s;
+            }
+            .player-chip:hover {
+              transform: translateY(-2px);
+              box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+            }
+            .count-bump {
+              animation: bump 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+              display: inline-block;
+            }
+            @keyframes bump {
+              0% { transform: scale(1); }
+              30% { transform: scale(1.4); color: var(--success); }
+              100% { transform: scale(1); }
+            }
+            .lobby-header-banner {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              background: var(--bg-card);
+              padding: 24px 48px;
+              border-radius: var(--radius);
+              box-shadow: var(--shadow);
+              margin-bottom: 24px;
+              border: 1px solid var(--border);
+            }
+            .lobby-main-area {
+              flex: 1;
+              background: var(--bg-card);
+              border-radius: var(--radius);
+              padding: 40px;
+              box-shadow: var(--shadow);
+              display: flex;
+              flex-direction: column;
+              border: 1px solid var(--border);
+            }
+          `}</style>
+
+          {/* Top Banner */}
+          <div className="lobby-header-banner" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: '80px', padding: '48px 32px', background: 'linear-gradient(135deg, rgba(79, 70, 229, 0.2) 0%, rgba(52, 211, 153, 0.1) 100%)', border: '1px solid rgba(255,255,255,0.1)' }}>
+            
+            <div style={{ flex: 1, textAlign: 'right' }}>
+              <div style={{ fontSize: 36, fontWeight: 900, color: '#fff', marginBottom: 16, lineHeight: 1.2 }}>
+                Наведите камеру,<br/>чтобы играть!
+              </div>
+              <div style={{ fontSize: 18, color: 'rgba(255,255,255,0.7)', marginBottom: 24 }}>
+                Или введите адрес вручную:<br/>
+                <strong style={{ color: '#fff', fontSize: 24, background: 'rgba(0,0,0,0.2)', padding: '4px 12px', borderRadius: 8, marginTop: 8, display: 'inline-block' }}>http://{serverInfo?.ip}:{serverInfo?.port}</strong>
+              </div>
+              
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 12, background: 'rgba(255,255,255,0.1)', padding: '12px 24px', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.2)' }}>
+                <span style={{ fontSize: 14, textTransform: 'uppercase', letterSpacing: 2, color: 'rgba(255,255,255,0.6)', fontWeight: 700 }}>PIN:</span>
+                <span style={{ fontSize: 32, fontWeight: 900, letterSpacing: 6, color: '#fff' }}>{pin}</span>
+              </div>
+            </div>
+
+            <div style={{ 
+              background: '#fff', 
+              padding: '24px', 
+              borderRadius: '32px', 
+              boxShadow: '0 24px 48px rgba(0,0,0,0.5), 0 0 0 8px rgba(255,255,255,0.15)',
+              transform: 'scale(1)',
+              animation: 'popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+            }}>
+              {serverInfo && (
+                <QRCodeSVG
+                  value={`http://${serverInfo.ip}:${serverInfo.port}/player?pin=${pin}`}
+                  size={280}
+                  bgColor="#fff"
+                  fgColor="#000"
+                />
               )}
             </div>
-            {players.length >= 1 && (
-              <button className="btn btn-primary btn-start" onClick={handleStart}>
-                Начать
-              </button>
-            )}
+
+            <div style={{ flex: 1 }}></div>
           </div>
-          <div className="lobby-qr-col">
-            <div className="qr-section">
-              {serverInfo ? (
-                <>
-                  <QRCodeSVG
-                    value={`http://${serverInfo.ip}:${serverInfo.port}/player?pin=${pin}&style=${document.documentElement.className.match(/style-(\S+)/)?.[1]||'editorial'}${document.documentElement.classList.contains('dark') ? '&dark=1' : ''}`}
-                    size={180}
-                    bgColor={qrBg()}
-                    fgColor={qrColor()}
-                    style={{ cursor: 'pointer', transition: 'transform .15s' }}
-                    onClick={() => setQrExpanded(true)}
-                    onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.03)')}
-                    onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
-                  />
-                  <p className="qr-url">{serverInfo.ip}:{serverInfo.port}</p>
-                  <p className="qr-hint">Наведи камеру</p>
-                  <p className="qr-url-secondary">
-                    ПК: <strong>http://127.0.0.1:{serverInfo.port}/player?pin={pin}</strong>
-                  </p>
-                </>
+
+          {/* Main Area */}
+          <div className="lobby-main-area">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32 }}>
+              <h2 style={{ fontSize: 32, margin: 0, display: 'flex', alignItems: 'center' }}>
+                Ученики 
+                <span style={{ background: 'var(--bg-input)', padding: '4px 20px', borderRadius: 24, fontSize: 28, marginLeft: 16, fontWeight: 800, color: 'var(--primary)', border: '1px solid var(--border)' }} className="count-bump" key={players.length}>
+                  {players.length}
+                </span>
+              </h2>
+              <button
+                className="btn btn-primary"
+                style={{ fontSize: 24, padding: '18px 56px', borderRadius: 100, boxShadow: '0 8px 32px var(--primary-glow)', fontWeight: 800 }}
+                disabled={players.length === 0}
+                onClick={handleStart}
+              >
+                Начать игру ▶
+              </button>
+            </div>
+            
+            <div style={{ flex: 1, overflowY: 'auto', paddingRight: 8 }}>
+              {players.length === 0 ? (
+                <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)', fontSize: 24, flexDirection: 'column', gap: 24 }}>
+                  <div className="spinner" style={{ width: 80, height: 80, borderWidth: 8 }}></div>
+                  <div style={{ fontWeight: 700 }}>Ожидаем подключения игроков...</div>
+                  <div style={{ fontSize: 18, opacity: 0.8 }}>Отправьте им PIN или покажите QR-код</div>
+                </div>
               ) : (
-                <p className="qr-hint">Загрузка...</p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 20, alignContent: 'flex-start' }}>
+                  {players.map((p) => (
+                    <div key={p.id} className="player-chip">
+                      <span style={{ opacity: 0.5, marginRight: 4 }}>👤</span> {p.nickname}
+                    </div>
+                  ))}
+                </div>
               )}
             </div>
           </div>
@@ -344,6 +438,9 @@ export function GameHost({ pin, serverInfo, onBack }: Props) {
                 Вопрос {liveIndex + 1} / {liveTotal}
               </div>
               <h2 className="q-text-host">{liveQuestion.text}</h2>
+              {liveQuestion.image && (
+                <img src={liveQuestion.image} alt="Question" style={{ maxWidth: '100%', maxHeight: 240, objectFit: 'contain', borderRadius: 12, margin: '10px auto' }} />
+              )}
 
               {liveQuestion.time_seconds > 0 && (
                 <div className="timer-bar">

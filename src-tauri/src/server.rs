@@ -95,26 +95,40 @@ async fn handle_socket(socket: WebSocket, state: Arc<AppState>) {
                         host_senders.entry(pin.clone()).or_default().push(tx.clone());
                     }
 
-                    ClientMessage::Join { pin, nickname } => {
+                    ClientMessage::Join { pin, nickname, player_id: client_player_id } => {
                         let sessions = state.sessions.read().await;
                         if let Some(session) = sessions.get(&pin) {
-                            if session.status != GameStatus::Lobby {
+                            let mut existing_player = None;
+                            if let Some(pid) = &client_player_id {
+                                existing_player = session.players.iter().find(|p| &p.id == pid).cloned();
+                            }
+                            if existing_player.is_none() {
+                                existing_player = session.players.iter().find(|p| p.nickname == nickname).cloned();
+                            }
+
+                            if existing_player.is_none() && session.status != GameStatus::Lobby {
                                 let _ = tx.send(serde_json::to_string(&ServerMessage::LobbyError {
                                     error: "Игра уже началась".to_string(),
                                 }).unwrap());
                                 continue;
                             }
-                            let p_id = format!("player-{}", uuid::Uuid::new_v4());
+
+                            let (player, is_new) = if let Some(p) = existing_player {
+                                (p, false)
+                            } else {
+                                let p_id = format!("player-{}", uuid::Uuid::new_v4());
+                                (Player {
+                                    id: p_id,
+                                    nickname: nickname.clone(),
+                                    total_score: 0,
+                                    streak: 0,
+                                    joined_at: format!("{}", SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_millis()),
+                                }, true)
+                            };
+
+                            let p_id = player.id.clone();
                             player_id = p_id.clone();
                             current_pin = pin.clone();
-
-                            let player = Player {
-                                id: p_id.clone(),
-                                nickname: nickname.clone(),
-                                total_score: 0,
-                                streak: 0,
-                                joined_at: format!("{}", SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_millis()),
-                            };
 
                             let sender_idx = {
                                 let mut senders = state.ws_senders.write().await;
@@ -132,7 +146,9 @@ async fn handle_socket(socket: WebSocket, state: Arc<AppState>) {
                             {
                                 let mut sessions = state.sessions.write().await;
                                 if let Some(session) = sessions.get_mut(&pin) {
-                                    session.players.push(player.clone());
+                                    if is_new {
+                                        session.players.push(player.clone());
+                                    }
 
                                     let join_msg = serde_json::to_string(&ServerMessage::LobbyJoined {
                                         player_id: p_id.clone(),
@@ -141,13 +157,68 @@ async fn handle_socket(socket: WebSocket, state: Arc<AppState>) {
                                     }).unwrap();
                                     let _ = tx.send(join_msg);
 
+                                    // Only broadcast PlayerJoined to host if they are newly joining
+                                    // Or broadcast anyway so host knows they reconnected
                                     let host_msg = serde_json::to_string(&ServerMessage::PlayerJoined {
-                                        player,
+                                        player: player.clone(),
                                     }).unwrap();
                                     if let Some(host_senders) = state.host_senders.read().await.get(&pin) {
                                         for htx in host_senders {
                                             let _ = htx.send(host_msg.clone());
                                         }
+                                    }
+                                    
+                                    // If game is active, we should immediately send them current state
+                                    if session.status != GameStatus::Lobby && session.mode == GameMode::Test {
+                                        let test_start = serde_json::to_string(&ServerMessage::TestStart {
+                                            questions: session.quiz.questions.iter().map(|q| QuestionData {
+                                                text: q.text.clone(),
+                                                image: q.image.clone(),
+                                                time_seconds: q.time_seconds,
+                                                answers: q.answers.iter().enumerate().map(|(i, a)| AnswerData {
+                                                    text: a.text.clone(),
+                                                    color: a.color.clone(),
+                                                    shape: a.shape.clone(),
+                                                    index: i,
+                                                }).collect(),
+                                            }).collect(),
+                                            total: session.quiz.questions.len(),
+                                            total_time_seconds: session.quiz.total_time_seconds,
+                                        }).unwrap();
+                                        let _ = tx.send(test_start);
+                                        
+                                        // Also send them current test progress
+                                        let players_prog: Vec<_> = session.players.iter().map(|p| {
+                                            let q_idx = session.player_progress.get(&p.id).cloned().unwrap_or(0);
+                                            PlayerProgressItem {
+                                                id: p.id.clone(),
+                                                nickname: p.nickname.clone(),
+                                                question_index: q_idx,
+                                                total_questions: session.quiz.questions.len(),
+                                                score: p.total_score,
+                                                done: q_idx >= session.quiz.questions.len(),
+                                            }
+                                        }).collect();
+                                        let _ = tx.send(serde_json::to_string(&ServerMessage::Progress { players: players_prog }).unwrap());
+                                    } else if session.status == GameStatus::Active && session.mode == GameMode::LiveQuiz {
+                                        // Send current question
+                                        let q = &session.quiz.questions[session.current_question_index];
+                                        let msg = serde_json::to_string(&ServerMessage::Question {
+                                            question: QuestionData {
+                                                text: q.text.clone(),
+                                                image: q.image.clone(),
+                                                time_seconds: q.time_seconds,
+                                                answers: q.answers.iter().enumerate().map(|(i, a)| AnswerData {
+                                                    text: a.text.clone(),
+                                                    color: a.color.clone(),
+                                                    shape: a.shape.clone(),
+                                                    index: i,
+                                                }).collect(),
+                                            },
+                                            total: session.quiz.questions.len(),
+                                            index: session.current_question_index,
+                                        }).unwrap();
+                                        let _ = tx.send(msg);
                                     }
                                 }
                             }
@@ -448,16 +519,18 @@ async fn handle_socket(socket: WebSocket, state: Arc<AppState>) {
     if !current_pin.is_empty() && !player_id.is_empty() {
         let mut sessions = state.sessions.write().await;
         if let Some(session) = sessions.get_mut(&current_pin) {
-            session.players.retain(|p| p.id != player_id);
-            session.answers.retain(|a| a.player_id != player_id);
-            session.player_progress.remove(&player_id);
+            if session.status == GameStatus::Lobby {
+                session.players.retain(|p| p.id != player_id);
+                session.answers.retain(|a| a.player_id != player_id);
+                session.player_progress.remove(&player_id);
 
-            let leave_msg = serde_json::to_string(&ServerMessage::PlayerLeft {
-                player_id: player_id.clone(),
-            }).unwrap();
-            if let Some(host_senders) = state.host_senders.read().await.get(&current_pin) {
-                for htx in host_senders {
-                    let _ = htx.send(leave_msg.clone());
+                let leave_msg = serde_json::to_string(&ServerMessage::PlayerLeft {
+                    player_id: player_id.clone(),
+                }).unwrap();
+                if let Some(host_senders) = state.host_senders.read().await.get(&current_pin) {
+                    for htx in host_senders {
+                        let _ = htx.send(leave_msg.clone());
+                    }
                 }
             }
         }
@@ -485,6 +558,7 @@ async fn send_question_to_players(state: &Arc<AppState>, pin: &str) {
                 if let Some(question) = session.quiz.questions.get(q_idx) {
                     let qdata = QuestionData {
                         text: question.text.clone(),
+                        image: question.image.clone(),
                         time_seconds: question.time_seconds,
                         answers: question.answers.iter().enumerate().map(|(i, a)| AnswerData {
                             text: a.text.clone(),
@@ -547,6 +621,7 @@ async fn broadcast_question(state: &Arc<AppState>, pin: &str, index: usize) {
         if let Some(question) = session.quiz.questions.get(index) {
             let qdata = QuestionData {
                 text: question.text.clone(),
+                image: question.image.clone(),
                 time_seconds: question.time_seconds,
                 answers: question.answers.iter().enumerate().map(|(i, a)| AnswerData {
                     text: a.text.clone(), color: a.color.clone(), shape: a.shape.clone(), index: i,
@@ -563,6 +638,7 @@ async fn broadcast_question(state: &Arc<AppState>, pin: &str, index: usize) {
             let host_msg = serde_json::to_string(&ServerMessage::Question {
                 question: QuestionData {
                     text: question.text.clone(),
+                    image: question.image.clone(),
                     time_seconds: question.time_seconds,
                     answers: question.answers.iter().enumerate().map(|(i, a)| AnswerData {
                         text: a.text.clone(), color: a.color.clone(), shape: a.shape.clone(), index: i,
@@ -586,6 +662,7 @@ async fn broadcast_test_start(state: &Arc<AppState>, pin: &str) {
         let total_time = session.quiz.total_time_seconds;
         let questions: Vec<QuestionData> = session.quiz.questions.iter().map(|q| QuestionData {
             text: q.text.clone(),
+            image: q.image.clone(),
             time_seconds: 0,
             answers: q.answers.iter().enumerate().map(|(ai, a)| AnswerData {
                 text: a.text.clone(), color: a.color.clone(), shape: a.shape.clone(), index: ai,

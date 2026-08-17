@@ -46,18 +46,30 @@
 .style-forest.dark{--bg:#0a140e;--bg-alt:#0f1f14;--bg-card:#0f1f14;--bg-card-solid:#0a140e;--bg-input:#0f1f14;--text:#dcfce7;--text-secondary:#6fc996;--primary:#34d399;--primary-hover:#10b981;--primary-glow:rgba(52,211,153,.15);--danger:#ef4444;--success:#34d399;--border:#14532d;--shadow:0 8px 32px rgba(0,0,0,.35)}
 
 html{scroll-behavior:smooth}
-body{font-family:'Outfit','Work Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;background-attachment:fixed}
+body{font-family:'Outfit','Work Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;background-attachment:fixed;position:relative}
+
+/* Premium background mesh gradient */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: radial-gradient(circle at 15% 50%, rgba(99, 102, 241, 0.04), transparent 50%),
+              radial-gradient(circle at 85% 30%, rgba(52, 211, 153, 0.04), transparent 50%);
+  z-index: -1;
+  pointer-events: none;
+}
 
 .app{width:100%;max-width:100%;padding:20px;min-height:100vh;display:flex;flex-direction:column}
 @media(min-width:1400px){.app{padding:24px 36px}}
 
 /* ─── Glass Card Mixin ─── */
-.glass-card{background:var(--bg-card);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+.glass-card{background:var(--bg-card);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 12px 40px rgba(0,0,0,0.06), 0 0 0 1px rgba(255,255,255,0.1) inset; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease}
+.glass-card:hover { transform: translateY(-2px); box-shadow: 0 16px 48px rgba(0,0,0,0.08), 0 0 0 1px rgba(255,255,255,0.2) inset; }
 
 /* ─── Header ─── */
-.app-header{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;background:var(--bg-card);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:var(--radius);margin-bottom:24px;border:1px solid var(--border);box-shadow:var(--shadow)}
-.header-left{display:flex;align-items:center;gap:14px}
-.app-logo{font-size:18px;cursor:pointer;user-select:none;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px}
+.app-header{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;background:var(--bg-card);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-radius:var(--radius);margin-bottom:24px;border:1px solid var(--border);box-shadow:0 8px 32px rgba(0,0,0,0.04), 0 0 0 1px rgba(255,255,255,0.1) inset}
+.header-left{display:flex;align-items:center;gap:16px}
+.app-logo{font-size:20px;cursor:pointer;user-select:none;font-weight:800;letter-spacing:-0.5px;color:var(--text);display:flex;align-items:center;gap:10px}
 .app-subtitle{color:var(--text-secondary);font-size:12px;display:none}
 @media(min-width:600px){.app-subtitle{display:inline}}
 .server-info{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-secondary);user-select:none}

@@ -119,6 +119,11 @@ p{font-size:14px;line-height:1.5;color:var(--text-secondary);text-align:center}
 /* ─── Animations ─── */
 @keyframes barGrow{from{width:0!important}}
 .bar-anim .histogram-bar-fill{animation:barGrow .6s ease}
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+  40% {transform: translateY(-20px);}
+  60% {transform: translateY(-10px);}
+}
 </style>
 </head>
 <body>
@@ -136,15 +141,16 @@ p{font-size:14px;line-height:1.5;color:var(--text-secondary);text-align:center}
 </div>
 
 <div id="waitingScreen" class="screen">
-<div class="card" style="gap:20px;padding:32px 24px">
-<div class="spinner"></div>
-<h2>Ожидание...</h2>
-<p class="lobby-waiting" id="waitingHint">Подключаемся к серверу...</p>
+<div class="card" style="gap:24px;padding:40px 24px;text-align:center">
+<div style="font-size:64px;animation:bounce 2s infinite">👋</div>
+<h2 style="font-size:28px;color:var(--success)">Вы в игре!</h2>
+<div id="waitingNickname" style="background:var(--bg-input);padding:12px 24px;border-radius:100px;font-size:20px;font-weight:700;color:var(--text);display:none;margin:0 auto"></div>
+<p class="lobby-waiting" id="waitingHint" style="font-size:16px;margin-top:8px">Смотрите на главный экран</p>
 <div id="lobbyInfo" style="display:none;flex-direction:column;align-items:center;gap:12px;width:100%">
 <div style="width:100%;height:1px;background:var(--border)"></div>
-<p class="lobby-label">В лобби</p>
-<p class="lobby-count" id="lobbyCount">0</p>
-<p class="lobby-players" id="lobbyPlayersList"></p>
+<p class="lobby-label">В лобби уже</p>
+<p class="lobby-count" id="lobbyCount" style="font-size:32px">0</p>
+<p class="lobby-players" id="lobbyPlayersList" style="opacity:0.7"></p>
 </div>
 </div>
 </div>
@@ -160,6 +166,7 @@ p{font-size:14px;line-height:1.5;color:var(--text-secondary);text-align:center}
 <div class="card" style="gap:12px;padding:22px 20px">
 <p class="q-progress" id="qProgress">Вопрос 1 / 5</p>
 <h2 class="q-text" id="qText"></h2>
+<img id="qImage" style="display:none;max-width:100%;max-height:180px;border-radius:12px;margin:0 auto;object-fit:contain" />
 <div class="answers-grid" id="answersContainer"></div>
 </div>
 </div>
@@ -181,6 +188,7 @@ p{font-size:14px;line-height:1.5;color:var(--text-secondary);text-align:center}
 </div>
 <div class="timer-bar"><div class="timer-fill" id="testTimerFill" style="width:100%"></div></div>
 <h2 class="q-text" id="testQText" style="font-size:17px;min-height:40px"></h2>
+<img id="testQImage" style="display:none;max-width:100%;max-height:160px;border-radius:12px;margin:0 auto;object-fit:contain" />
 <div class="answers-grid" id="testAnswersContainer"></div>
 <div style="display:flex;gap:8px;width:100%;margin-top:4px">
 <button class="btn btn-secondary" id="testPrevBtn" style="flex:1">◀ Назад</button>
@@ -244,15 +252,26 @@ connTimeout=setTimeout(()=>{
 if(ws&&ws.readyState!==WebSocket.OPEN){
 ws.close();show('joinScreen');showErr('Сервер не отвечает. Проверьте подключение к Wi-Fi')
 }},8000);
-ws.onopen=()=>{if(connTimeout){clearTimeout(connTimeout);connTimeout=null}document.getElementById('waitingHint').textContent='Вход в лобби...';ws.send(JSON.stringify({type:'join',pin:urlPin,nickname:name}))};
+ws.onopen=()=>{if(connTimeout){clearTimeout(connTimeout);connTimeout=null}document.getElementById('waitingHint').textContent='Вход в лобби...';let pId=localStorage.getItem('quizkit_pid_'+urlPin);ws.send(JSON.stringify({type:'join',pin:urlPin,nickname:name,player_id:pId||undefined}))};
 ws.onmessage=e=>{try{handle(JSON.parse(e.data))}catch(ex){console.error('WS msg error:',ex)}};
 ws.onerror=()=>{if(connTimeout){clearTimeout(connTimeout);connTimeout=null}show('joinScreen');showErr('Ошибка подключения к серверу')};
 ws.onclose=()=>{if(connTimeout){clearTimeout(connTimeout);connTimeout=null}if(!document.getElementById('joinScreen').classList.contains('active')){show('joinScreen');showErr('Соединение потеряно')}};
 }
 
+// Auto-reconnect if we have stored credentials
+window.addEventListener('DOMContentLoaded', () => {
+  const storedPid = localStorage.getItem('quizkit_pid_'+urlPin);
+  const storedNick = localStorage.getItem('quizkit_nickname_'+urlPin);
+  if (urlPin && urlPin.length === 6 && storedPid && storedNick) {
+    document.getElementById('nameInput').value = storedNick;
+    // Auto-join after a small delay so UI can render
+    setTimeout(joinGame, 100);
+  }
+});
+
 function handle(msg){
 switch(msg.type){
-case'lobby_joined':{playerId=msg.player_id;document.getElementById('waitingHint').textContent='Учитель скоро начнёт игру';const li=document.getElementById('lobbyInfo');li.style.display='flex';const cnt=document.getElementById('lobbyCount');const lst=document.getElementById('lobbyPlayersList');if(msg.players){cnt.textContent=msg.players.length;const others=msg.players.filter(p=>p.id!==playerId);lst.innerHTML=others.length?'🎮 '+others.map(p=>p.nickname).join(', '):'Вы первый!'};break}
+case'lobby_joined':{playerId=msg.player_id;localStorage.setItem('quizkit_pid_'+urlPin,playerId);localStorage.setItem('quizkit_nickname_'+urlPin,nickname);document.getElementById('waitingHint').textContent='Смотрите на главный экран';document.getElementById('waitingNickname').textContent=nickname;document.getElementById('waitingNickname').style.display='inline-block';const li=document.getElementById('lobbyInfo');li.style.display='flex';const cnt=document.getElementById('lobbyCount');const lst=document.getElementById('lobbyPlayersList');if(msg.players){cnt.textContent=msg.players.length;const others=msg.players.filter(p=>p.id!==playerId);lst.innerHTML=others.length?'🎮 '+others.map(p=>p.nickname).join(', '):'Вы первый!'};break}
 case'lobby_error':show('joinScreen');showErr(msg.error);try{ws.close()}catch(e){}break;
 case'game_starting':showCountdown(msg);break;
 case'question':showQuestion(msg);break;
@@ -318,6 +337,14 @@ show('questionScreen');
 if(timerInterval)clearInterval(timerInterval);
 document.getElementById('qProgress').textContent='Вопрос '+(msg.index+1)+' / '+msg.total;
 document.getElementById('qText').textContent=msg.question.text;
+const img = document.getElementById('qImage');
+if (msg.question.image) {
+  img.src = msg.question.image;
+  img.style.display = 'block';
+} else {
+  img.style.display = 'none';
+  img.src = '';
+}
 const cont=document.getElementById('answersContainer');cont.innerHTML='';
 msg.question.answers.forEach((a,i)=>{const b=document.createElement('button');b.className='answer-btn';b.style.backgroundColor=ANS_COLORS[i];b.innerHTML='<span class="shape">'+ANS_SHAPES[i]+'</span><span class="text">'+a.text+'</span>';b.onclick=()=>submitAnswer(i);b.id='ans-'+i;cont.appendChild(b)});
 const sec=msg.question.time_seconds;
@@ -375,6 +402,14 @@ if(testQuestions.length===0)return;
 const q=testQuestions[testCurrent];
 document.getElementById('testProgress').textContent='Вопрос '+(testCurrent+1)+' / '+testQuestions.length;
 document.getElementById('testQText').textContent=q.text;
+const img = document.getElementById('testQImage');
+if (q.image) {
+  img.src = q.image;
+  img.style.display = 'block';
+} else {
+  img.style.display = 'none';
+  img.src = '';
+}
 const cont=document.getElementById('testAnswersContainer');cont.innerHTML='';
 q.answers.forEach((a,i)=>{
 const b=document.createElement('button');b.className='answer-btn';

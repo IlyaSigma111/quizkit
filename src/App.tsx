@@ -23,6 +23,7 @@ export type Quiz = {
 export type Question = {
   id: string
   text: string
+  image?: string
   time_seconds: number
   points: number
   answers: Answer[]
@@ -90,6 +91,7 @@ function App() {
   const [prevPage, setPrevPage] = useState<Page | null>(null)
   const [activeSessions, setActiveSessions] = useState<GameSession[]>([])
   const [cipherTemplate, setCipherTemplate] = useState<any>(null)
+  const [showUpdate, setShowUpdate] = useState(false)
 
   useEffect(() => {
     const handler = () => setIsFullscreen(!!document.fullscreenElement)
@@ -170,6 +172,31 @@ function App() {
     poll()
     return () => { cancelled = true }
   }, [])
+
+  useEffect(() => {
+    if (localStorage.getItem('quizkit_update_shown') !== 'true') {
+      const t = setTimeout(() => {
+        setShowUpdate(true)
+      }, 3000)
+      return () => clearTimeout(t)
+    }
+  }, [])
+
+  function handleUpdate(accept: boolean) {
+    if (!accept) {
+      setShowUpdate(false)
+      localStorage.setItem('quizkit_update_shown', 'true')
+      return
+    }
+    const p = document.getElementById('update-popup-content')
+    if (p) {
+      p.innerHTML = '<h3 style="margin-bottom:15px;text-align:center">Загрузка обновления...</h3><div class="timer-bar" style="height:6px;background:var(--bg-input);border-radius:3px;overflow:hidden"><div class="timer-fill" style="height:100%;background:var(--primary);width:100%;transition:width 2.5s linear;animation:barGrow 2.5s ease"></div></div>'
+    }
+    setTimeout(() => {
+      localStorage.setItem('quizkit_update_shown', 'true')
+      invoke('relaunch_app').catch(() => window.location.reload())
+    }, 2500)
+  }
 
   return (
     <div className="app">
@@ -284,6 +311,46 @@ function App() {
         )}
       </main>
 
+      {showUpdate && (
+        <div className="modal-overlay" style={{ zIndex: 100000, position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(8px)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <style>{`
+            @keyframes slideUpFade {
+              from { transform: translateY(40px) scale(0.95); opacity: 0; }
+              to { transform: translateY(0) scale(1); opacity: 1; }
+            }
+          `}</style>
+          <div className="card" id="update-popup-content" style={{ 
+            maxWidth: 420, 
+            textAlign: 'center', 
+            position: 'relative',
+            animation: 'slideUpFade 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+            boxShadow: '0 24px 48px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1) inset',
+            padding: '40px 32px'
+          }}>
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 72,
+              height: 72,
+              borderRadius: '50%',
+              background: 'rgba(52, 211, 153, 0.1)',
+              color: '#34d399',
+              fontSize: 36,
+              marginBottom: 24,
+              boxShadow: '0 0 30px rgba(52, 211, 153, 0.2)'
+            }}>✨</div>
+            <h2 style={{ fontSize: 28, fontWeight: 800, marginBottom: 12, color: '#fff' }}>Доступно обновление</h2>
+            <p style={{ marginBottom: 32, color: 'var(--text-secondary)', lineHeight: 1.6, fontSize: 16 }}>
+              Выпущена новая версия ИльЯкласса с улучшениями и новыми функциями. Хотите обновиться прямо сейчас?
+            </p>
+            <div style={{ display: 'flex', gap: 16, width: '100%' }}>
+              <button className="btn btn-secondary" style={{ flex: 1, padding: '16px', fontSize: 16, fontWeight: 600 }} onClick={() => handleUpdate(false)}>Позже</button>
+              <button className="btn btn-primary" style={{ flex: 1, padding: '16px', fontSize: 16, fontWeight: 700, background: '#34d399', color: '#000', boxShadow: '0 8px 24px rgba(52,211,153,0.3)' }} onClick={() => handleUpdate(true)}>Обновить</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -15,6 +15,7 @@ pub struct Answer {
 pub struct Question {
     pub id: String,
     pub text: String,
+    pub image: Option<String>,
     pub time_seconds: u32,
     pub points: u32,
     pub answers: Vec<Answer>,
@@ -131,6 +132,7 @@ pub struct AnswerSubmission {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct QuestionData {
     pub text: String,
+    pub image: Option<String>,
     pub time_seconds: u32,
     pub answers: Vec<AnswerData>,
 }
@@ -165,7 +167,7 @@ pub struct PlayerProgressItem {
 #[serde(tag = "type")]
 pub enum ClientMessage {
     #[serde(rename = "join")]
-    Join { pin: String, nickname: String },
+    Join { pin: String, nickname: String, player_id: Option<String> },
     #[serde(rename = "register_host")]
     RegisterHost { pin: String },
     #[serde(rename = "start_game")]
