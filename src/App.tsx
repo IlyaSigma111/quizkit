@@ -324,8 +324,10 @@ function App() {
             textAlign: 'center', 
             position: 'relative',
             animation: 'slideUpFade 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-            boxShadow: '0 24px 48px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1) inset',
-            padding: '40px 32px'
+            boxShadow: 'var(--shadow)',
+            padding: '40px 32px',
+            border: '2px solid var(--border)',
+            background: 'var(--bg-card)'
           }}>
             <div style={{
               display: 'inline-flex',
@@ -333,20 +335,20 @@ function App() {
               justifyContent: 'center',
               width: 72,
               height: 72,
-              borderRadius: '50%',
-              background: 'rgba(52, 211, 153, 0.1)',
-              color: '#34d399',
+              borderRadius: 'var(--radius)',
+              background: 'var(--bg-input)',
+              color: 'var(--primary)',
               fontSize: 36,
               marginBottom: 24,
-              boxShadow: '0 0 30px rgba(52, 211, 153, 0.2)'
-            }}>✨</div>
-            <h2 style={{ fontSize: 28, fontWeight: 800, marginBottom: 12, color: '#fff' }}>Доступно обновление</h2>
+              border: '2px solid var(--border)'
+            }}>⚡</div>
+            <h2 style={{ fontSize: 28, fontWeight: 900, marginBottom: 12, color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '1px' }}>Обновление</h2>
             <p style={{ marginBottom: 32, color: 'var(--text-secondary)', lineHeight: 1.6, fontSize: 16 }}>
-              Выпущена новая версия ИльЯкласса с улучшениями и новыми функциями. Хотите обновиться прямо сейчас?
+              Доступна новая версия программы с важными исправлениями. Рекомендуем обновиться сейчас.
             </p>
             <div style={{ display: 'flex', gap: 16, width: '100%' }}>
-              <button className="btn btn-secondary" style={{ flex: 1, padding: '16px', fontSize: 16, fontWeight: 600 }} onClick={() => handleUpdate(false)}>Позже</button>
-              <button className="btn btn-primary" style={{ flex: 1, padding: '16px', fontSize: 16, fontWeight: 700, background: '#34d399', color: '#000', boxShadow: '0 8px 24px rgba(52,211,153,0.3)' }} onClick={() => handleUpdate(true)}>Обновить</button>
+              <button className="btn btn-secondary" style={{ flex: 1, padding: '16px', fontSize: 16, fontWeight: 700, border: '2px solid var(--border)' }} onClick={() => handleUpdate(false)}>ПОЗЖЕ</button>
+              <button className="btn btn-primary" style={{ flex: 1, padding: '16px', fontSize: 16, fontWeight: 900 }} onClick={() => handleUpdate(true)}>ОБНОВИТЬ</button>
             </div>
           </div>
         </div>

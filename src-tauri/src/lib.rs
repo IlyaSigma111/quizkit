@@ -226,6 +226,29 @@ fn relaunch_app(app: tauri::AppHandle) {
     app.restart();
 }
 
+#[tauri::command]
+fn set_wifi_limit(limit: u32) -> Result<bool, String> {
+    let script = format!(
+        "If (!(Test-Path 'HKLM:\\System\\CurrentControlSet\\Services\\icssvc\\Settings')) {{ New-Item -Path 'HKLM:\\System\\CurrentControlSet\\Services\\icssvc\\Settings' -Force | Out-Null }}; Set-ItemProperty -Path 'HKLM:\\System\\CurrentControlSet\\Services\\icssvc\\Settings' -Name 'WifiMaxPeers' -Value {} -Type DWord -Force",
+        limit
+    );
+    let output = std::process::Command::new("powershell")
+        .args(&[
+            "-NoProfile",
+            "-ExecutionPolicy", "Bypass",
+            "-WindowStyle", "Hidden",
+            "-Command",
+            "Start-Process", "powershell",
+            "-ArgumentList", &format!("\"-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -Command \\\"{}\\\"\"", script),
+            "-Verb", "RunAs",
+            "-Wait"
+        ])
+        .output()
+        .map_err(|e| format!("Ошибка выполнения: {}", e))?;
+
+    Ok(output.status.success())
+}
+
 // ─── App Entry ───
 
 pub fn run() {
@@ -248,6 +271,7 @@ pub fn run() {
             export_results,
             check_active_sessions,
             clear_active_session,
+            set_wifi_limit,
             broadcast_style,
             get_app_info,
             download_app,

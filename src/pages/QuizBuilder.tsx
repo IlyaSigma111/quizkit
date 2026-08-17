@@ -304,7 +304,7 @@ export function QuizBuilder({ quizId, onBack, onCreateOwn }: Props) {
               {!q.image ? (
                 <label htmlFor={`q-img-${qi}`} style={{
                   display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                  padding: '24px', border: '2px dashed var(--border)', borderRadius: '12px',
+                  padding: '24px', border: '2px dashed var(--border)', borderRadius: 'var(--radius)',
                   background: 'var(--bg)', cursor: 'pointer', color: 'var(--text-secondary)',
                   transition: 'all 0.2s', gap: '8px'
                 }}
@@ -314,8 +314,8 @@ export function QuizBuilder({ quizId, onBack, onCreateOwn }: Props) {
                   <span style={{ fontWeight: 600 }}>Добавить картинку к вопросу</span>
                 </label>
               ) : (
-                <div style={{ position: 'relative', display: 'inline-block', width: '100%', textAlign: 'center', padding: '12px', background: 'var(--bg)', borderRadius: '12px', border: '1px solid var(--border)' }}>
-                  <img src={q.image} alt="preview" style={{ maxHeight: 200, maxWidth: '100%', borderRadius: 8, objectFit: 'contain' }} />
+                <div style={{ position: 'relative', display: 'inline-block', width: '100%', textAlign: 'center', padding: '12px', background: 'var(--bg)', borderRadius: 'var(--radius)', border: '1px solid var(--border)' }}>
+                  <img src={q.image} alt="preview" style={{ maxHeight: 200, maxWidth: '100%', borderRadius: 'var(--radius)', objectFit: 'contain' }} />
                   <div style={{ marginTop: 12, display: 'flex', gap: 12, justifyContent: 'center' }}>
                     <label htmlFor={`q-img-${qi}`} className="btn btn-secondary btn-sm" style={{ cursor: 'pointer' }}>
                       Заменить

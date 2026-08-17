@@ -47,6 +47,8 @@ export function Settings({ onBack, onStyleChange, onDarkModeChange }: Props) {
   const [error, setError] = useState('')
   const [showStyles, setShowStyles] = useState(false)
   const [appInfo, setAppInfo] = useState<{ version: string; channel: string } | null>(null)
+  const [wifiLimit, setWifiLimit] = useState(32)
+  const [wifiSaved, setWifiSaved] = useState(false)
 
   useEffect(() => {
     invoke<AppSettings>('get_settings').then(setSettings).catch(console.error)
@@ -57,6 +59,16 @@ export function Settings({ onBack, onStyleChange, onDarkModeChange }: Props) {
     if (!settings) return
     setSettings({ ...settings, ...patch })
     setSaved(false)
+  }
+
+  const handleWifiLimitSave = async () => {
+    try {
+      await invoke('set_wifi_limit', { limit: wifiLimit })
+      setWifiSaved(true)
+      setTimeout(() => setWifiSaved(false), 3000)
+    } catch (e) {
+      setError('' + e)
+    }
   }
 
   const handleSave = async () => {
@@ -205,6 +217,29 @@ export function Settings({ onBack, onStyleChange, onDarkModeChange }: Props) {
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
               Обнаруживать мобильный интернет у учеников
           </label>
+        </div>
+
+        <div className="settings-section">
+          <h3>Точка доступа Wi-Fi (если раздаете с ПК)</h3>
+          <div className="settings-defaults" style={{ alignItems: 'flex-end', gap: '12px' }}>
+            <label>
+              <span>Максимум устройств</span>
+              <input
+                type="number"
+                min={8}
+                max={128}
+                value={wifiLimit}
+                onChange={(e) => setWifiLimit(Math.max(8, Math.min(128, +e.target.value || 32)))}
+                style={{ width: '100px' }}
+              />
+            </label>
+            <button className="btn btn-secondary" onClick={handleWifiLimitSave} style={{ marginBottom: 4, transition: 'all 0.2s', background: wifiSaved ? 'var(--primary)' : undefined, color: wifiSaved ? '#fff' : undefined, borderColor: wifiSaved ? 'var(--primary)' : undefined }}>
+              {wifiSaved ? '✓ Успешно применено' : 'Применить (нужны права админа)'}
+            </button>
+          </div>
+          <p style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 8 }}>
+            Снимает ограничение Windows на 8 устройств. После применения переподключите точку доступа.
+          </p>
         </div>
 
         {error && <div className="settings-error">{error}</div>}

@@ -2,8 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import type { Quiz, GameSession } from '../App'
 import { invoke } from '@tauri-apps/api/core'
 
-const TEMPLATES_URL = 'https://ilyasigma111.github.io/quizkit/quizzes/'
-const TEMPLATES_REFRESH_MS = 60 * 60 * 1000
+
 
 type Props = {
   onEditQuiz: (id: string) => void
@@ -162,33 +161,12 @@ export function Dashboard({ onEditQuiz, onStartGame, onCatalog }: Props) {
 
   const fetchTemplates = useCallback(async () => {
     try {
-      const html = await fetch(TEMPLATES_URL).then(r => r.text())
-      const match = html.match(/const QUIZZES\s*=\s*(\[[\s\S]*?\]);/)
-      if (!match) throw new Error('QUIZZES not found')
-      const entries: any[] = new Function('return ' + match[1])()
-      const results: HolidayTemplate[] = []
-      for (const e of entries) {
-        try {
-          const res = await fetch(`https://ilyasigma111.github.io/quizkit/quizzes/${e.file}`)
-          if (!res.ok) continue
-          const data = await res.json()
-          results.push({
-            title: data.title || e.title,
-            description: data.description || e.desc,
-            emoji: e.icon,
-            type: e.tab,
-            questions: (data.questions || []).map((q: any) => ({
-              text: q.text || q.question,
-              time_seconds: q.time_seconds ?? 30,
-              points: q.points ?? 10,
-              answers: (q.answers || []).map((a: any, i: number) =>
-                typeof a === 'string' ? { text: a, is_correct: i === q.correct } : a
-              ),
-            })),
-          })
-        } catch { /* skip failed */ }
+      const res = await fetch('/templates.json')
+      if (!res.ok) return
+      const data = await res.json()
+      if (data.templates) {
+        setRemoteTemplates(data.templates)
       }
-      if (results.length) setRemoteTemplates(results)
     } catch {
       // offline — keep current templates
     }
@@ -196,8 +174,6 @@ export function Dashboard({ onEditQuiz, onStartGame, onCatalog }: Props) {
 
   useEffect(() => {
     fetchTemplates()
-    const interval = setInterval(fetchTemplates, TEMPLATES_REFRESH_MS)
-    return () => clearInterval(interval)
   }, [fetchTemplates])
 
   const templates = remoteTemplates || HOLIDAY_TEMPLATES
@@ -513,7 +489,7 @@ export function Dashboard({ onEditQuiz, onStartGame, onCatalog }: Props) {
             </p>
             <pre style={{
               width: '100%', padding: 16, background: 'var(--bg-input)',
-              borderRadius: 10, fontSize: 12, lineHeight: 1.5,
+              borderRadius: 'var(--radius)', fontSize: 12, lineHeight: 1.5,
               overflow: 'auto', maxHeight: 360, color: 'var(--text)',
               textAlign: 'left', whiteSpace: 'pre', fontFamily: 'monospace'
             }}>{TEMPLATE_JSON}</pre>

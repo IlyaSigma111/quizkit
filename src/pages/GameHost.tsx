@@ -304,40 +304,42 @@ export function GameHost({ pin, serverInfo, onBack }: Props) {
               box-shadow: var(--shadow);
               display: flex;
               flex-direction: column;
-              border: 1px solid var(--border);
+          border: 1px solid var(--border);
             }
           `}</style>
 
           {/* Top Banner */}
-          <div className="lobby-header-banner" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: '80px', padding: '48px 32px', background: 'linear-gradient(135deg, rgba(79, 70, 229, 0.2) 0%, rgba(52, 211, 153, 0.1) 100%)', border: '1px solid rgba(255,255,255,0.1)' }}>
+          <div className="lobby-header-banner glass-card" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: '40px', padding: '24px 32px', marginBottom: '24px' }}>
             
             <div style={{ flex: 1, textAlign: 'right' }}>
-              <div style={{ fontSize: 36, fontWeight: 900, color: '#fff', marginBottom: 16, lineHeight: 1.2 }}>
-                Наведите камеру,<br/>чтобы играть!
+              <div style={{ fontSize: 24, fontWeight: 700, color: 'var(--text-secondary)', marginBottom: 12, lineHeight: 1.2 }}>
+                Отсканируйте камерой телефона:
               </div>
-              <div style={{ fontSize: 18, color: 'rgba(255,255,255,0.7)', marginBottom: 24 }}>
+              <div style={{ fontSize: 16, color: 'var(--text-secondary)' }}>
                 Или введите адрес вручную:<br/>
-                <strong style={{ color: '#fff', fontSize: 24, background: 'rgba(0,0,0,0.2)', padding: '4px 12px', borderRadius: 8, marginTop: 8, display: 'inline-block' }}>http://{serverInfo?.ip}:{serverInfo?.port}</strong>
+                <strong style={{ color: 'var(--text)', fontSize: 20, background: 'var(--bg-input)', padding: '6px 16px', borderRadius: 'var(--radius)', marginTop: 8, display: 'inline-block', border: '1px solid var(--border)' }}>http://{serverInfo?.ip}:{serverInfo?.port}</strong>
               </div>
-              
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 12, background: 'rgba(255,255,255,0.1)', padding: '12px 24px', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.2)' }}>
-                <span style={{ fontSize: 14, textTransform: 'uppercase', letterSpacing: 2, color: 'rgba(255,255,255,0.6)', fontWeight: 700 }}>PIN:</span>
-                <span style={{ fontSize: 32, fontWeight: 900, letterSpacing: 6, color: '#fff' }}>{pin}</span>
+              <div style={{ marginTop: 24, display: 'inline-block', textAlign: 'left', background: 'var(--bg-input)', padding: '12px 16px', borderRadius: 'var(--radius)', border: '2px solid var(--border)', boxShadow: '4px 4px 0 rgba(0,0,0,0.1)' }}>
+                <strong style={{ color: 'var(--text)', fontSize: 14 }}>⚠️ Раздаете Wi-Fi с телефона?</strong>
+                <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginTop: 4, lineHeight: 1.4 }}>
+                  Не забудьте снять лимит в настройках точки доступа<br/>(обычно по умолчанию стоит максимум 8 устройств).
+                </div>
               </div>
             </div>
 
             <div style={{ 
               background: '#fff', 
-              padding: '24px', 
-              borderRadius: '32px', 
-              boxShadow: '0 24px 48px rgba(0,0,0,0.5), 0 0 0 8px rgba(255,255,255,0.15)',
+              padding: '16px', 
+              borderRadius: 'var(--radius)', 
+              boxShadow: 'var(--shadow)',
+              border: '2px solid #000',
               transform: 'scale(1)',
               animation: 'popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
             }}>
               {serverInfo && (
                 <QRCodeSVG
                   value={`http://${serverInfo.ip}:${serverInfo.port}/player?pin=${pin}`}
-                  size={280}
+                  size={180}
                   bgColor="#fff"
                   fgColor="#000"
                 />
@@ -352,13 +354,13 @@ export function GameHost({ pin, serverInfo, onBack }: Props) {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32 }}>
               <h2 style={{ fontSize: 32, margin: 0, display: 'flex', alignItems: 'center' }}>
                 Ученики 
-                <span style={{ background: 'var(--bg-input)', padding: '4px 20px', borderRadius: 24, fontSize: 28, marginLeft: 16, fontWeight: 800, color: 'var(--primary)', border: '1px solid var(--border)' }} className="count-bump" key={players.length}>
+                <span style={{ background: 'var(--bg-input)', padding: '4px 20px', borderRadius: 'var(--radius)', fontSize: 28, marginLeft: 16, fontWeight: 800, color: 'var(--primary)', border: '1px solid var(--border)' }} className="count-bump" key={players.length}>
                   {players.length}
                 </span>
               </h2>
               <button
                 className="btn btn-primary"
-                style={{ fontSize: 24, padding: '18px 56px', borderRadius: 100, boxShadow: '0 8px 32px var(--primary-glow)', fontWeight: 800 }}
+                style={{ fontSize: 24, padding: '18px 56px', borderRadius: 'var(--radius)', boxShadow: '0 8px 32px var(--primary-glow)', fontWeight: 800 }}
                 disabled={players.length === 0}
                 onClick={handleStart}
               >
@@ -439,7 +441,7 @@ export function GameHost({ pin, serverInfo, onBack }: Props) {
               </div>
               <h2 className="q-text-host">{liveQuestion.text}</h2>
               {liveQuestion.image && (
-                <img src={liveQuestion.image} alt="Question" style={{ maxWidth: '100%', maxHeight: 240, objectFit: 'contain', borderRadius: 12, margin: '10px auto' }} />
+                <img src={liveQuestion.image} alt="Question" style={{ maxWidth: '100%', maxHeight: 240, objectFit: 'contain', borderRadius: 'var(--radius)', margin: '10px auto' }} />
               )}
 
               {liveQuestion.time_seconds > 0 && (

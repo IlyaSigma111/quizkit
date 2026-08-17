@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>IlyaQlass — викторины и проверочные работы в классе</title>
+<title>IlyaQlass вЂ” РІРёРєС‚РѕСЂРёРЅС‹ Рё РїСЂРѕРІРµСЂРѕС‡РЅС‹Рµ СЂР°Р±РѕС‚С‹ РІ РєР»Р°СЃСЃРµ</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -15,7 +15,7 @@ body{font-family:'Outfit','Work Sans',-apple-system,BlinkMacSystemFont,'Segoe UI
 a{color:inherit;text-decoration:none}
 ::selection{background:var(--primary-trans)}
 
-/* ─── Themes ─── */
+/* в”Ђв”Ђв”Ђ Themes в”Ђв”Ђв”Ђ */
 [data-theme]{transition:--bg 1s cubic-bezier(.4,0,.2,1),--text .8s cubic-bezier(.4,0,.2,1),--primary .8s cubic-bezier(.4,0,.2,1),--accent .8s cubic-bezier(.4,0,.2,1),--primary-trans .8s cubic-bezier(.4,0,.2,1),--primary-light .8s cubic-bezier(.4,0,.2,1),--accent-light .8s cubic-bezier(.4,0,.2,1),--text-dim .8s cubic-bezier(.4,0,.2,1),--text-muted .8s cubic-bezier(.4,0,.2,1),--border .8s cubic-bezier(.4,0,.2,1),--glass-bg .8s cubic-bezier(.4,0,.2,1),--glass-border .8s cubic-bezier(.4,0,.2,1) .15s,background 1s cubic-bezier(.4,0,.2,1)}
 @supports not (transition:--bg .8s){[data-theme]{transition:opacity .8s}[data-theme].theme-transitioning>[data-theme-inner]{opacity:0}}
 @property --bg{syntax:'<color>';inherits:true;initial-value:#080812}
@@ -31,55 +31,55 @@ a{color:inherit;text-decoration:none}
 @property --glass-bg{syntax:'<color>';inherits:true;initial-value:rgba(255,255,255,.03)}
 @property --glass-border{syntax:'<color>';inherits:true;initial-value:rgba(255,255,255,.06)}
 
-/* ─── Indigo (default) ─── */
+/* в”Ђв”Ђв”Ђ Indigo (default) в”Ђв”Ђв”Ђ */
 [data-theme="indigo"]{--bg:#080812;--text:#e8e8f0;--primary:#6366F1;--accent:#10B981;--primary-trans:rgba(99,102,241,.35);--primary-light:#a5b4fc;--accent-light:#6ee7b7;--text-dim:#7878a0;--text-muted:#5858a0;--border:rgba(255,255,255,.05);--glass-bg:rgba(255,255,255,.03);--glass-border:rgba(255,255,255,.06)}
 [data-theme="indigo"] .orb1{background:#6366F1}
 [data-theme="indigo"] .orb2{background:#10B981}
 [data-theme="indigo"] .orb3{background:#818CF8}
 
-/* ─── Rose ─── */
+/* в”Ђв”Ђв”Ђ Rose в”Ђв”Ђв”Ђ */
 [data-theme="rose"]{--bg:#120808;--text:#fce8e8;--primary:#F43F5E;--accent:#F97316;--primary-trans:rgba(244,63,94,.35);--primary-light:#fda4af;--accent-light:#fdba74;--text-dim:#a06868;--text-muted:#805858;--border:rgba(255,255,255,.05);--glass-bg:rgba(255,255,255,.03);--glass-border:rgba(255,255,255,.06)}
 [data-theme="rose"] .orb1{background:#F43F5E}
 [data-theme="rose"] .orb2{background:#F97316}
 [data-theme="rose"] .orb3{background:#fb7185}
 
-/* ─── Violet ─── */
+/* в”Ђв”Ђв”Ђ Violet в”Ђв”Ђв”Ђ */
 [data-theme="violet"]{--bg:#0e0812;--text:#ece8f0;--primary:#8B5CF6;--accent:#06B6D4;--primary-trans:rgba(139,92,246,.35);--primary-light:#c4b5fd;--accent-light:#67e8f9;--text-dim:#7868a0;--text-muted:#585880;--border:rgba(255,255,255,.05);--glass-bg:rgba(255,255,255,.03);--glass-border:rgba(255,255,255,.06)}
 [data-theme="violet"] .orb1{background:#8B5CF6}
 [data-theme="violet"] .orb2{background:#06B6D4}
 [data-theme="violet"] .orb3{background:#a78bfa}
 
-/* ─── Forest ─── */
+/* в”Ђв”Ђв”Ђ Forest в”Ђв”Ђв”Ђ */
 [data-theme="forest"]{--bg:#081210;--text:#e8f0ec;--primary:#059669;--accent:#65A30D;--primary-trans:rgba(5,150,105,.35);--primary-light:#6ee7b7;--accent-light:#a3e635;--text-dim:#68a080;--text-muted:#488060;--border:rgba(255,255,255,.05);--glass-bg:rgba(255,255,255,.03);--glass-border:rgba(255,255,255,.06)}
 [data-theme="forest"] .orb1{background:#059669}
 [data-theme="forest"] .orb2{background:#65A30D}
 [data-theme="forest"] .orb3{background:#34d399}
 
-/* ─── Amber ─── */
+/* в”Ђв”Ђв”Ђ Amber в”Ђв”Ђв”Ђ */
 [data-theme="amber"]{--bg:#121008;--text:#f0ece8;--primary:#F59E0B;--accent:#D97706;--primary-trans:rgba(245,158,11,.35);--primary-light:#fcd34d;--accent-light:#fbbf24;--text-dim:#a09068;--text-muted:#807058;--border:rgba(255,255,255,.05);--glass-bg:rgba(255,255,255,.03);--glass-border:rgba(255,255,255,.06)}
 [data-theme="amber"] .orb1{background:#F59E0B}
 [data-theme="amber"] .orb2{background:#D97706}
 [data-theme="amber"] .orb3{background:#fbbf24}
 
-/* ─── Sky ─── */
+/* в”Ђв”Ђв”Ђ Sky в”Ђв”Ђв”Ђ */
 [data-theme="sky"]{--bg:#080e12;--text:#e8f0f0;--primary:#0EA5E9;--accent:#38BDF8;--primary-trans:rgba(14,165,233,.35);--primary-light:#7dd3fc;--accent-light:#bae6fd;--text-dim:#6878a0;--text-muted:#486880;--border:rgba(255,255,255,.05);--glass-bg:rgba(255,255,255,.03);--glass-border:rgba(255,255,255,.06)}
 [data-theme="sky"] .orb1{background:#0EA5E9}
 [data-theme="sky"] .orb2{background:#38BDF8}
 [data-theme="sky"] .orb3{background:#7dd3fc}
 
-/* ─── Cyberpunk ─── */
+/* в”Ђв”Ђв”Ђ Cyberpunk в”Ђв”Ђв”Ђ */
 [data-theme="cyberpunk"]{--bg:#0D0D0D;--text:#e8f0e8;--primary:#FF006E;--accent:#00FFFF;--primary-trans:rgba(255,0,110,.35);--primary-light:#ff80b3;--accent-light:#80ffff;--text-dim:#707070;--text-muted:#505050;--border:rgba(255,255,255,.05);--glass-bg:rgba(255,255,255,.03);--glass-border:rgba(255,255,255,.06)}
 [data-theme="cyberpunk"] .orb1{background:#FF006E}
 [data-theme="cyberpunk"] .orb2{background:#00FFFF}
 [data-theme="cyberpunk"] .orb3{background:#ff3399}
 
-/* ─── Midnight ─── */
+/* в”Ђв”Ђв”Ђ Midnight в”Ђв”Ђв”Ђ */
 [data-theme="midnight"]{--bg:#060612;--text:#e8e8f8;--primary:#818CF8;--accent:#C084FC;--primary-trans:rgba(129,140,248,.35);--primary-light:#c7d2fe;--accent-light:#d8b4fe;--text-dim:#6868a0;--text-muted:#484880;--border:rgba(255,255,255,.05);--glass-bg:rgba(255,255,255,.03);--glass-border:rgba(255,255,255,.06)}
 [data-theme="midnight"] .orb1{background:#818CF8}
 [data-theme="midnight"] .orb2{background:#C084FC}
 [data-theme="midnight"] .orb3{background:#a78bfa}
 
-/* ─── Background Orbs ─── */
+/* в”Ђв”Ђв”Ђ Background Orbs в”Ђв”Ђв”Ђ */
 .bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .bg .orb{position:absolute;border-radius:50%;filter:blur(120px);opacity:.12}
 .bg .orb:nth-child(1){width:600px;height:600px;top:-200px;left:-100px;animation:orbFloat 20s ease-in-out infinite}
@@ -87,7 +87,7 @@ a{color:inherit;text-decoration:none}
 .bg .orb:nth-child(3){width:400px;height:400px;top:50%;left:50%;transform:translate(-50%,-50%);animation:orbFloat 18s ease-in-out infinite 5s}
 @keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(40px,-60px) scale(1.1)}66%{transform:translate(-30px,40px) scale(.9)}}
 
-/* ─── Nav ─── */
+/* в”Ђв”Ђв”Ђ Nav в”Ђв”Ђв”Ђ */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 24px;background:color-mix(in srgb,var(--bg) 70%,transparent);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border);transition:transform .35s,background .6s,border-color .6s}
 .nav-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:60px}
 .nav-logo{display:flex;align-items:center;gap:10px;font-size:17px;font-weight:700;color:var(--text);letter-spacing:-.3px}
@@ -97,7 +97,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 24px;background:co
 .nav-right a:hover{color:var(--text)}
 .nav-right .btn{padding:7px 18px;font-size:12px}
 
-/* ─── Hero ─── */
+/* в”Ђв”Ђв”Ђ Hero в”Ђв”Ђв”Ђ */
 .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 24px 70px;position:relative;z-index:1}
 .hero-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:100px;font-size:12px;font-weight:500;background:color-mix(in srgb,var(--primary) 12%,transparent);color:var(--primary-light);border:1px solid color-mix(in srgb,var(--primary) 15%,transparent);margin-bottom:24px;letter-spacing:.3px}
 .hero h1{font-size:clamp(36px,6.5vw,72px);font-weight:800;letter-spacing:-2px;line-height:1.06;max-width:820px;background:linear-gradient(135deg,var(--text) 0%,var(--primary-light) 50%,var(--accent-light) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
@@ -107,7 +107,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 24px;background:co
 .hero-stats span{font-size:13px;color:var(--text-muted);display:flex;align-items:center;gap:6px}
 .hero-stats span svg{width:16px;height:16px;opacity:.5}
 
-/* ─── Buttons ─── */
+/* в”Ђв”Ђв”Ђ Buttons в”Ђв”Ђв”Ђ */
 .btn{display:inline-flex;align-items:center;gap:8px;padding:13px 24px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;border:none;letter-spacing:0;position:relative;font-family:inherit}
 .btn-primary{background:var(--primary);color:#fff}
 .btn-primary:hover{background:color-mix(in srgb,var(--primary) 80%,#000);transform:translateY(-2px);box-shadow:0 8px 30px color-mix(in srgb,var(--primary) 25%,transparent)}
@@ -128,32 +128,32 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 24px;background:co
 .btn-emerald{background:color-mix(in srgb,var(--accent),#000 25%);color:#fff;padding:16px 32px;font-size:15px;border-radius:12px}
 .btn-emerald:hover{background:color-mix(in srgb,var(--accent),#000 40%);transform:translateY(-2px);box-shadow:0 8px 30px color-mix(in srgb,var(--accent) 25%,transparent)}
 
-/* ─── Sections ─── */
+/* в”Ђв”Ђв”Ђ Sections в”Ђв”Ђв”Ђ */
 section{padding:100px 24px;position:relative;z-index:1}
 .section-inner{max-width:1000px;margin:0 auto}
 .section-label{font-size:12px;font-weight:600;color:var(--primary);text-transform:uppercase;letter-spacing:2px;margin-bottom:8px}
 .section-title{font-size:clamp(26px,3.5vw,40px);font-weight:700;letter-spacing:-1px;line-height:1.15;margin-bottom:14px;color:var(--text)}
 .section-desc{color:var(--text-dim);font-size:15px;max-width:520px;line-height:1.6}
 
-/* ─── Glass Cards ─── */
+/* в”Ђв”Ђв”Ђ Glass Cards в”Ђв”Ђв”Ђ */
 .glass{background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:14px;transition:all .3s cubic-bezier(.4,0,.2,1);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
 .glass:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12);transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.3)}
 .glass-icon{width:44px;height:44px;border-radius:12px;background:color-mix(in srgb,var(--primary) 12%,transparent);display:flex;align-items:center;justify-content:center;margin-bottom:16px;border:1px solid color-mix(in srgb,var(--primary) 10%,transparent)}
 .glass-icon svg{width:20px;height:20px;color:var(--primary-light)}
 
-/* ─── Steps ─── */
+/* в”Ђв”Ђв”Ђ Steps в”Ђв”Ђв”Ђ */
 .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px;margin-top:40px}
 .step{padding:32px 24px}
 .step h3{font-size:16px;font-weight:600;margin-bottom:6px;color:var(--text)}
 .step p{color:var(--text-dim);font-size:13px;line-height:1.5}
 
-/* ─── Features ─── */
+/* в”Ђв”Ђв”Ђ Features в”Ђв”Ђв”Ђ */
 .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px;margin-top:40px}
 .feature-card{padding:32px 24px}
 .feature-card h3{font-size:15px;font-weight:600;margin-bottom:4px;color:var(--text)}
 .feature-card p{color:var(--text-dim);font-size:13px;line-height:1.5}
 
-/* ─── Download Section ─── */
+/* в”Ђв”Ђв”Ђ Download Section в”Ђв”Ђв”Ђ */
 .download-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:40px}
 .download-card{padding:36px 24px;text-align:center;position:relative;cursor:default}
 .download-card .os-icon{width:48px;height:48px;margin:0 auto 14px;border-radius:12px;background:color-mix(in srgb,var(--primary) 10%,transparent);display:flex;align-items:center;justify-content:center;border:1px solid color-mix(in srgb,var(--primary) 8%,transparent)}
@@ -162,9 +162,9 @@ section{padding:100px 24px;position:relative;z-index:1}
 .download-card p{color:var(--text-dim);font-size:13px;margin-bottom:20px}
 .download-card .file-info{font-size:11px;color:var(--text-muted);margin-top:8px}
 .download-card.soon{opacity:.4;pointer-events:none}
-.download-card.soon::after{content:'Скоро';position:absolute;top:14px;right:14px;font-size:10px;font-weight:600;color:var(--primary-light);background:color-mix(in srgb,var(--primary) 12%,transparent);padding:3px 10px;border-radius:100px}
+.download-card.soon::after{content:'РЎРєРѕСЂРѕ';position:absolute;top:14px;right:14px;font-size:10px;font-weight:600;color:var(--primary-light);background:color-mix(in srgb,var(--primary) 12%,transparent);padding:3px 10px;border-radius:100px}
 
-/* ─── FAQ ─── */
+/* в”Ђв”Ђв”Ђ FAQ в”Ђв”Ђв”Ђ */
 .faq-list{max-width:660px;margin-top:36px;display:flex;flex-direction:column}
 .faq-item{border-bottom:1px solid var(--border)}
 .faq-q{width:100%;padding:20px 0;background:none;border:none;color:var(--text);font-size:15px;font-weight:500;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;transition:color .2s;font-family:inherit}
@@ -174,20 +174,20 @@ section{padding:100px 24px;position:relative;z-index:1}
 .faq-a{padding:0 0 20px;color:var(--text-dim);font-size:13px;line-height:1.7;display:none}
 .faq-item.open .faq-a{display:block}
 
-/* ─── CTA ─── */
+/* в”Ђв”Ђв”Ђ CTA в”Ђв”Ђв”Ђ */
 .cta{text-align:center;padding:100px 24px}
 .cta h2{font-size:clamp(26px,3.5vw,38px);font-weight:700;margin-bottom:10px}
 .cta p{color:var(--text-dim);margin-bottom:28px;font-size:15px}
 
 
 
-/* ─── Footer ─── */
+/* в”Ђв”Ђв”Ђ Footer в”Ђв”Ђв”Ђ */
 footer{padding:40px 24px;border-top:1px solid var(--border);max-width:1000px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;color:var(--text-muted);font-size:12px;position:relative;z-index:1}
 footer a{color:var(--text-dim);transition:color .2s}
 footer a:hover{color:var(--text)}
 .footer-links{display:flex;gap:16px}
 
-/* ─── Responsive ─── */
+/* в”Ђв”Ђв”Ђ Responsive в”Ђв”Ђв”Ђ */
 @media(max-width:768px){
   .nav-right a:not(.btn){display:none}
   .hero-stats{flex-direction:column;gap:12px;align-items:center}
@@ -211,64 +211,64 @@ footer a:hover{color:var(--text)}
     IlyaQlass
   </a>
   <div class="nav-right">
-    <a href="#how">Как работает</a>
-    <a href="#features">Возможности</a>
-    <a href="https://ilyasigma111.github.io/quizkit/quizzes/">Готовые квизы</a>
+    <a href="#how">РљР°Рє СЂР°Р±РѕС‚Р°РµС‚</a>
+    <a href="#features">Р’РѕР·РјРѕР¶РЅРѕСЃС‚Рё</a>
+    <a href="https://ilyasigma111.github.io/quizkit/quizzes/">Р“РѕС‚РѕРІС‹Рµ РєРІРёР·С‹</a>
     <a href="#faq">FAQ</a>
-    <a href="#download" class="btn btn-primary">Скачать</a>
+    <a href="#download" class="btn btn-primary">РЎРєР°С‡Р°С‚СЊ</a>
   </div>
 </div>
 </nav>
 
 <section class="hero">
-  <div class="hero-badge">Версия 0.6.7</div>
-  <h1>Викторины и проверочные работы — без интернета и установки</h1>
-  <p>Учитель запускает один .exe — класс подключается по QR-коду. Никаких регистраций, серверов и приложений для учеников.</p>
+  <div class="hero-badge">Р’РµСЂСЃРёСЏ 0.7.7</div>
+  <h1>Р’РёРєС‚РѕСЂРёРЅС‹ Рё РїСЂРѕРІРµСЂРѕС‡РЅС‹Рµ СЂР°Р±РѕС‚С‹ вЂ” Р±РµР· РёРЅС‚РµСЂРЅРµС‚Р° Рё СѓСЃС‚Р°РЅРѕРІРєРё</h1>
+  <p>РЈС‡РёС‚РµР»СЊ Р·Р°РїСѓСЃРєР°РµС‚ РѕРґРёРЅ .exe вЂ” РєР»Р°СЃСЃ РїРѕРґРєР»СЋС‡Р°РµС‚СЃСЏ РїРѕ QR-РєРѕРґСѓ. РќРёРєР°РєРёС… СЂРµРіРёСЃС‚СЂР°С†РёР№, СЃРµСЂРІРµСЂРѕРІ Рё РїСЂРёР»РѕР¶РµРЅРёР№ РґР»СЏ СѓС‡РµРЅРёРєРѕРІ.</p>
   <div class="hero-btns">
-  <a href="https://github.com/IlyaSigma111/quizkit/releases/download/v0.6.7/ilya-klass.exe" download="IlyaQlass.exe" class="btn-download">Скачать для Windows</a>
-    <a href="#how" class="btn-outline">Как работает</a>
+  <a href="./IlyaKlass_0.7.7_x64-setup.exe" download="IlyaKlass_0.7.7_x64-setup.exe" class="btn-download">РЎРєР°С‡Р°С‚СЊ РґР»СЏ Windows</a>
+    <a href="#how" class="btn-outline">РљР°Рє СЂР°Р±РѕС‚Р°РµС‚</a>
   </div>
   <div class="hero-stats">
-    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg> Один .exe</span>
-    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="12" cy="12" r="3"/><path d="M12 7v2"/><path d="M12 15v2"/></svg> QR-код для входа</span>
-    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> Мгновенный старт</span>
-    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Локальная сеть</span>
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg> РћРґРёРЅ .exe</span>
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="12" cy="12" r="3"/><path d="M12 7v2"/><path d="M12 15v2"/></svg> QR-РєРѕРґ РґР»СЏ РІС…РѕРґР°</span>
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> РњРіРЅРѕРІРµРЅРЅС‹Р№ СЃС‚Р°СЂС‚</span>
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Р›РѕРєР°Р»СЊРЅР°СЏ СЃРµС‚СЊ</span>
   </div>
 </section>
 
 <section id="how">
 <div class="section-inner">
-  <div class="section-label">Как работает</div>
-  <h2 class="section-title">От запуска до первого ответа — меньше минуты</h2>
-  <p class="section-desc">Никакой подготовки. Просто запустите программу и покажите QR на экране.</p>
+  <div class="section-label">РљР°Рє СЂР°Р±РѕС‚Р°РµС‚</div>
+  <h2 class="section-title">РћС‚ Р·Р°РїСѓСЃРєР° РґРѕ РїРµСЂРІРѕРіРѕ РѕС‚РІРµС‚Р° вЂ” РјРµРЅСЊС€Рµ РјРёРЅСѓС‚С‹</h2>
+  <p class="section-desc">РќРёРєР°РєРѕР№ РїРѕРґРіРѕС‚РѕРІРєРё. РџСЂРѕСЃС‚Рѕ Р·Р°РїСѓСЃС‚РёС‚Рµ РїСЂРѕРіСЂР°РјРјСѓ Рё РїРѕРєР°Р¶РёС‚Рµ QR РЅР° СЌРєСЂР°РЅРµ.</p>
   <div class="steps">
     <div class="step glass">
       <div class="glass-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
       </div>
-      <h3>Скачайте .exe</h3>
-      <p>Один файл. Ничего устанавливать не нужно. Просто запустите.</p>
+      <h3>РЎРєР°С‡Р°Р№С‚Рµ .exe</h3>
+      <p>РћРґРёРЅ С„Р°Р№Р». РќРёС‡РµРіРѕ СѓСЃС‚Р°РЅР°РІР»РёРІР°С‚СЊ РЅРµ РЅСѓР¶РЅРѕ. РџСЂРѕСЃС‚Рѕ Р·Р°РїСѓСЃС‚РёС‚Рµ.</p>
     </div>
     <div class="step glass">
       <div class="glass-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
       </div>
-      <h3>Создайте квиз</h3>
-      <p>Встроенный редактор: вопросы, ответы, баллы, импорт из JSON.</p>
+      <h3>РЎРѕР·РґР°Р№С‚Рµ РєРІРёР·</h3>
+      <p>Р’СЃС‚СЂРѕРµРЅРЅС‹Р№ СЂРµРґР°РєС‚РѕСЂ: РІРѕРїСЂРѕСЃС‹, РѕС‚РІРµС‚С‹, Р±Р°Р»Р»С‹, РёРјРїРѕСЂС‚ РёР· JSON.</p>
     </div>
     <div class="step glass">
       <div class="glass-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
       </div>
-      <h3>Запустите игру</h3>
-      <p>Выберите режим — на экране появится QR-код. Ученики сканируют.</p>
+      <h3>Р—Р°РїСѓСЃС‚РёС‚Рµ РёРіСЂСѓ</h3>
+      <p>Р’С‹Р±РµСЂРёС‚Рµ СЂРµР¶РёРј вЂ” РЅР° СЌРєСЂР°РЅРµ РїРѕСЏРІРёС‚СЃСЏ QR-РєРѕРґ. РЈС‡РµРЅРёРєРё СЃРєР°РЅРёСЂСѓСЋС‚.</p>
     </div>
     <div class="step glass">
       <div class="glass-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
       </div>
-      <h3>Ученики в деле</h3>
-      <p>Открыли в браузере — ввели имя — отвечают. Всё, никаких приложений.</p>
+      <h3>РЈС‡РµРЅРёРєРё РІ РґРµР»Рµ</h3>
+      <p>РћС‚РєСЂС‹Р»Рё РІ Р±СЂР°СѓР·РµСЂРµ вЂ” РІРІРµР»Рё РёРјСЏ вЂ” РѕС‚РІРµС‡Р°СЋС‚. Р’СЃС‘, РЅРёРєР°РєРёС… РїСЂРёР»РѕР¶РµРЅРёР№.</p>
     </div>
   </div>
 </div>
@@ -276,51 +276,51 @@ footer a:hover{color:var(--text)}
 
 <section id="features">
 <div class="section-inner">
-  <div class="section-label">Возможности</div>
-  <h2 class="section-title">Всё для активной работы в классе</h2>
-  <p class="section-desc">Два режима, живая статистика и таблица лидеров — и никаких регистраций.</p>
+  <div class="section-label">Р’РѕР·РјРѕР¶РЅРѕСЃС‚Рё</div>
+  <h2 class="section-title">Р’СЃС‘ РґР»СЏ Р°РєС‚РёРІРЅРѕР№ СЂР°Р±РѕС‚С‹ РІ РєР»Р°СЃСЃРµ</h2>
+  <p class="section-desc">Р”РІР° СЂРµР¶РёРјР°, Р¶РёРІР°СЏ СЃС‚Р°С‚РёСЃС‚РёРєР° Рё С‚Р°Р±Р»РёС†Р° Р»РёРґРµСЂРѕРІ вЂ” Рё РЅРёРєР°РєРёС… СЂРµРіРёСЃС‚СЂР°С†РёР№.</p>
   <div class="features">
     <div class="feature-card glass">
       <div class="glass-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
       </div>
-      <h3>Два формата</h3>
-      <p>Проверочная работа — каждый в своём темпе. Викторина — все одновременно на время.</p>
+      <h3>Р”РІР° С„РѕСЂРјР°С‚Р°</h3>
+      <p>РџСЂРѕРІРµСЂРѕС‡РЅР°СЏ СЂР°Р±РѕС‚Р° вЂ” РєР°Р¶РґС‹Р№ РІ СЃРІРѕС‘Рј С‚РµРјРїРµ. Р’РёРєС‚РѕСЂРёРЅР° вЂ” РІСЃРµ РѕРґРЅРѕРІСЂРµРјРµРЅРЅРѕ РЅР° РІСЂРµРјСЏ.</p>
     </div>
     <div class="feature-card glass">
       <div class="glass-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
       </div>
-      <h3>Без установки для учеников</h3>
-      <p>Открывают страницу по QR — без приложений, регистраций и СМС. Просто браузер.</p>
+      <h3>Р‘РµР· СѓСЃС‚Р°РЅРѕРІРєРё РґР»СЏ СѓС‡РµРЅРёРєРѕРІ</h3>
+      <p>РћС‚РєСЂС‹РІР°СЋС‚ СЃС‚СЂР°РЅРёС†Сѓ РїРѕ QR вЂ” Р±РµР· РїСЂРёР»РѕР¶РµРЅРёР№, СЂРµРіРёСЃС‚СЂР°С†РёР№ Рё РЎРњРЎ. РџСЂРѕСЃС‚Рѕ Р±СЂР°СѓР·РµСЂ.</p>
     </div>
     <div class="feature-card glass">
       <div class="glass-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
       </div>
-      <h3>Живая статистика</h3>
-      <p>На экране учителя: кто ответил, сколько баллов, распределение ответов.</p>
+      <h3>Р–РёРІР°СЏ СЃС‚Р°С‚РёСЃС‚РёРєР°</h3>
+      <p>РќР° СЌРєСЂР°РЅРµ СѓС‡РёС‚РµР»СЏ: РєС‚Рѕ РѕС‚РІРµС‚РёР», СЃРєРѕР»СЊРєРѕ Р±Р°Р»Р»РѕРІ, СЂР°СЃРїСЂРµРґРµР»РµРЅРёРµ РѕС‚РІРµС‚РѕРІ.</p>
     </div>
     <div class="feature-card glass">
       <div class="glass-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
       </div>
-      <h3>Таблица лидеров</h3>
-      <p>После каждого раунда и в финале — рейтинг с баллами. Соревновательный дух.</p>
+      <h3>РўР°Р±Р»РёС†Р° Р»РёРґРµСЂРѕРІ</h3>
+      <p>РџРѕСЃР»Рµ РєР°Р¶РґРѕРіРѕ СЂР°СѓРЅРґР° Рё РІ С„РёРЅР°Р»Рµ вЂ” СЂРµР№С‚РёРЅРі СЃ Р±Р°Р»Р»Р°РјРё. РЎРѕСЂРµРІРЅРѕРІР°С‚РµР»СЊРЅС‹Р№ РґСѓС….</p>
     </div>
     <div class="feature-card glass">
       <div class="glass-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
       </div>
-      <h3>Импорт из JSON</h3>
-      <p>Готовьте вопросы в любом текстовом редакторе и импортируйте одним кликом.</p>
+      <h3>РРјРїРѕСЂС‚ РёР· JSON</h3>
+      <p>Р“РѕС‚РѕРІСЊС‚Рµ РІРѕРїСЂРѕСЃС‹ РІ Р»СЋР±РѕРј С‚РµРєСЃС‚РѕРІРѕРј СЂРµРґР°РєС‚РѕСЂРµ Рё РёРјРїРѕСЂС‚РёСЂСѓР№С‚Рµ РѕРґРЅРёРј РєР»РёРєРѕРј.</p>
     </div>
     <div class="feature-card glass">
       <div class="glass-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
       </div>
-      <h3>Локально и безопасно</h3>
-      <p>Сервер работает в вашей сети. Никаких внешних серверов и интернета.</p>
+      <h3>Р›РѕРєР°Р»СЊРЅРѕ Рё Р±РµР·РѕРїР°СЃРЅРѕ</h3>
+      <p>РЎРµСЂРІРµСЂ СЂР°Р±РѕС‚Р°РµС‚ РІ РІР°С€РµР№ СЃРµС‚Рё. РќРёРєР°РєРёС… РІРЅРµС€РЅРёС… СЃРµСЂРІРµСЂРѕРІ Рё РёРЅС‚РµСЂРЅРµС‚Р°.</p>
     </div>
   </div>
 </div>
@@ -328,21 +328,21 @@ footer a:hover{color:var(--text)}
 
 <section id="download">
 <div class="section-inner" style="text-align:center">
-  <div class="section-label">Скачать</div>
-  <h2 class="section-title">Попробуйте прямо сейчас</h2>
-  <p class="section-desc" style="margin:0 auto">Скачайте бета-версию и проведите свою первую викторину за пару минут</p>
+  <div class="section-label">РЎРєР°С‡Р°С‚СЊ</div>
+  <h2 class="section-title">РџРѕРїСЂРѕР±СѓР№С‚Рµ РїСЂСЏРјРѕ СЃРµР№С‡Р°СЃ</h2>
+  <p class="section-desc" style="margin:0 auto">РЎРєР°С‡Р°Р№С‚Рµ Р±РµС‚Р°-РІРµСЂСЃРёСЋ Рё РїСЂРѕРІРµРґРёС‚Рµ СЃРІРѕСЋ РїРµСЂРІСѓСЋ РІРёРєС‚РѕСЂРёРЅСѓ Р·Р° РїР°СЂСѓ РјРёРЅСѓС‚</p>
   <div class="download-grid">
     <div class="download-card glass" style="display:block">
       <div class="os-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 8h6"/><path d="M9 12h6"/><path d="M9 16h4"/></svg>
       </div>
       <h3>Windows 10 / 11</h3>
-      <p>x64 • ~10 МБ</p>
+      <p>x64 вЂў ~10 РњР‘</p>
       <div class="download-actions">
-        <a href="https://github.com/IlyaSigma111/quizkit/releases/download/v0.6.7/ilya-klass.exe" download="IlyaQlass.exe" class="btn-download-sm">Портативная</a>
-        <a href="https://github.com/IlyaSigma111/quizkit/releases/download/v0.6.7/IlyaKlass_0.6.7_x64-setup.exe" class="btn-download-sm btn-download-sm-outline">Установщик</a>
+        <a href="./ilya-klass.exe" download="IlyaQlass.exe" class="btn-download-sm">РџРѕСЂС‚Р°С‚РёРІРЅР°СЏ</a>
+        <a href="./IlyaKlass_0.7.7_x64-setup.exe" class="btn-download-sm btn-download-sm-outline">РЈСЃС‚Р°РЅРѕРІС‰РёРє</a>
       </div>
-      <div class="file-info">.exe — запуск без установки / .exe — установка</div>
+      <div class="file-info">.exe вЂ” Р·Р°РїСѓСЃРє Р±РµР· СѓСЃС‚Р°РЅРѕРІРєРё / .exe вЂ” СѓСЃС‚Р°РЅРѕРІРєР°</div>
     </div>
     <div class="download-card glass soon" style="position:relative">
       <div class="os-icon">
@@ -350,8 +350,8 @@ footer a:hover{color:var(--text)}
       </div>
       <h3>macOS</h3>
       <p>Intel & Apple Silicon</p>
-      <span class="btn-download" style="display:inline-flex;font-size:13px;padding:10px 20px;opacity:.5">Скачать</span>
-      <div class="file-info">Скоро будет доступна</div>
+      <span class="btn-download" style="display:inline-flex;font-size:13px;padding:10px 20px;opacity:.5">РЎРєР°С‡Р°С‚СЊ</span>
+      <div class="file-info">РЎРєРѕСЂРѕ Р±СѓРґРµС‚ РґРѕСЃС‚СѓРїРЅР°</div>
     </div>
     <div class="download-card glass soon" style="position:relative">
       <div class="os-icon">
@@ -359,13 +359,13 @@ footer a:hover{color:var(--text)}
       </div>
       <h3>Linux</h3>
       <p>AppImage / deb</p>
-      <span class="btn-download" style="display:inline-flex;font-size:13px;padding:10px 20px;opacity:.5">Скачать</span>
-      <div class="file-info">Скоро будет доступна</div>
+      <span class="btn-download" style="display:inline-flex;font-size:13px;padding:10px 20px;opacity:.5">РЎРєР°С‡Р°С‚СЊ</span>
+      <div class="file-info">РЎРєРѕСЂРѕ Р±СѓРґРµС‚ РґРѕСЃС‚СѓРїРЅР°</div>
     </div>
   </div>
   <div style="margin-top:28px;font-size:13px;color:var(--text-muted)">
-    <span>Версия 0.6.7 — </span>
-    <a href="https://github.com/IlyaSigma111/quizkit/releases" style="color:var(--primary-light)">Все релизы на GitHub</a>
+    <span>Р’РµСЂСЃРёСЏ 0.6.7 вЂ” </span>
+    <a href="https://github.com/IlyaSigma111/quizkit/releases" style="color:var(--primary-light)">Р’СЃРµ СЂРµР»РёР·С‹ РЅР° GitHub</a>
   </div>
 </div>
 </section>
@@ -373,29 +373,29 @@ footer a:hover{color:var(--text)}
 <section id="faq">
 <div class="section-inner">
   <div class="section-label">FAQ</div>
-  <h2 class="section-title">Частые вопросы</h2>
+  <h2 class="section-title">Р§Р°СЃС‚С‹Рµ РІРѕРїСЂРѕСЃС‹</h2>
   <div class="faq-list">
-    <div class="faq-item"><button class="faq-q">Нужен ли интернет для работы? <span class="arrow">▼</span></button><div class="faq-a">Нет. Приложение создаёт локальный веб-сервер в вашей Wi-Fi сети. Ученики подключаются к нему через браузер — внешний интернет не требуется.</div></div>
-    <div class="faq-item"><button class="faq-q">Что нужно ученикам? <span class="arrow">▼</span></button><div class="faq-a">Только телефон с камерой и браузером. Наводят камеру на QR — открывается страница, вводят имя и отвечают. Никаких приложений, регистраций и аккаунтов.</div></div>
-    <div class="faq-item"><button class="faq-q">Сколько учеников может играть одновременно? <span class="arrow">▼</span></button><div class="faq-a">Ограничений по софту нет. Реальное ограничение — пропускная способность вашей Wi-Fi сети и мощность компьютера учителя. 30+ человек работают стабильно.</div></div>
-    <div class="faq-item"><button class="faq-q">Можно ли импортировать вопросы из файла? <span class="arrow">▼</span></button><div class="faq-a">Да. В редакторе есть кнопка «JSON» — загружайте .json с вопросами и ответами в нужном формате. Шаблон покажет сама программа.</div></div>
-    <div class="faq-item"><button class="faq-q">Это безопасно? Не украдут ли данные? <span class="arrow">▼</span></button><div class="faq-a">Всё работает локально — данные не уходят за пределы вашей сети. Приложение не собирает никакую личную информацию. На первом запуске Windows попросит разрешение на доступ к сети — это нормально.</div></div>
-    <div class="faq-item"><button class="faq-q">На чём написано приложение? <span class="arrow">▼</span></button><div class="faq-a">Бэкенд на Rust (Tauri v2, axum), фронтенд — React + TypeScript. Всё компилируется в один .exe без зависимостей.</div></div>
+    <div class="faq-item"><button class="faq-q">РќСѓР¶РµРЅ Р»Рё РёРЅС‚РµСЂРЅРµС‚ РґР»СЏ СЂР°Р±РѕС‚С‹? <span class="arrow">в–ј</span></button><div class="faq-a">РќРµС‚. РџСЂРёР»РѕР¶РµРЅРёРµ СЃРѕР·РґР°С‘С‚ Р»РѕРєР°Р»СЊРЅС‹Р№ РІРµР±-СЃРµСЂРІРµСЂ РІ РІР°С€РµР№ Wi-Fi СЃРµС‚Рё. РЈС‡РµРЅРёРєРё РїРѕРґРєР»СЋС‡Р°СЋС‚СЃСЏ Рє РЅРµРјСѓ С‡РµСЂРµР· Р±СЂР°СѓР·РµСЂ вЂ” РІРЅРµС€РЅРёР№ РёРЅС‚РµСЂРЅРµС‚ РЅРµ С‚СЂРµР±СѓРµС‚СЃСЏ.</div></div>
+    <div class="faq-item"><button class="faq-q">Р§С‚Рѕ РЅСѓР¶РЅРѕ СѓС‡РµРЅРёРєР°Рј? <span class="arrow">в–ј</span></button><div class="faq-a">РўРѕР»СЊРєРѕ С‚РµР»РµС„РѕРЅ СЃ РєР°РјРµСЂРѕР№ Рё Р±СЂР°СѓР·РµСЂРѕРј. РќР°РІРѕРґСЏС‚ РєР°РјРµСЂСѓ РЅР° QR вЂ” РѕС‚РєСЂС‹РІР°РµС‚СЃСЏ СЃС‚СЂР°РЅРёС†Р°, РІРІРѕРґСЏС‚ РёРјСЏ Рё РѕС‚РІРµС‡Р°СЋС‚. РќРёРєР°РєРёС… РїСЂРёР»РѕР¶РµРЅРёР№, СЂРµРіРёСЃС‚СЂР°С†РёР№ Рё Р°РєРєР°СѓРЅС‚РѕРІ.</div></div>
+    <div class="faq-item"><button class="faq-q">РЎРєРѕР»СЊРєРѕ СѓС‡РµРЅРёРєРѕРІ РјРѕР¶РµС‚ РёРіСЂР°С‚СЊ РѕРґРЅРѕРІСЂРµРјРµРЅРЅРѕ? <span class="arrow">в–ј</span></button><div class="faq-a">РћРіСЂР°РЅРёС‡РµРЅРёР№ РїРѕ СЃРѕС„С‚Сѓ РЅРµС‚. Р РµР°Р»СЊРЅРѕРµ РѕРіСЂР°РЅРёС‡РµРЅРёРµ вЂ” РїСЂРѕРїСѓСЃРєРЅР°СЏ СЃРїРѕСЃРѕР±РЅРѕСЃС‚СЊ РІР°С€РµР№ Wi-Fi СЃРµС‚Рё Рё РјРѕС‰РЅРѕСЃС‚СЊ РєРѕРјРїСЊСЋС‚РµСЂР° СѓС‡РёС‚РµР»СЏ. 30+ С‡РµР»РѕРІРµРє СЂР°Р±РѕС‚Р°СЋС‚ СЃС‚Р°Р±РёР»СЊРЅРѕ.</div></div>
+    <div class="faq-item"><button class="faq-q">РњРѕР¶РЅРѕ Р»Рё РёРјРїРѕСЂС‚РёСЂРѕРІР°С‚СЊ РІРѕРїСЂРѕСЃС‹ РёР· С„Р°Р№Р»Р°? <span class="arrow">в–ј</span></button><div class="faq-a">Р”Р°. Р’ СЂРµРґР°РєС‚РѕСЂРµ РµСЃС‚СЊ РєРЅРѕРїРєР° В«JSONВ» вЂ” Р·Р°РіСЂСѓР¶Р°Р№С‚Рµ .json СЃ РІРѕРїСЂРѕСЃР°РјРё Рё РѕС‚РІРµС‚Р°РјРё РІ РЅСѓР¶РЅРѕРј С„РѕСЂРјР°С‚Рµ. РЁР°Р±Р»РѕРЅ РїРѕРєР°Р¶РµС‚ СЃР°РјР° РїСЂРѕРіСЂР°РјРјР°.</div></div>
+    <div class="faq-item"><button class="faq-q">Р­С‚Рѕ Р±РµР·РѕРїР°СЃРЅРѕ? РќРµ СѓРєСЂР°РґСѓС‚ Р»Рё РґР°РЅРЅС‹Рµ? <span class="arrow">в–ј</span></button><div class="faq-a">Р’СЃС‘ СЂР°Р±РѕС‚Р°РµС‚ Р»РѕРєР°Р»СЊРЅРѕ вЂ” РґР°РЅРЅС‹Рµ РЅРµ СѓС…РѕРґСЏС‚ Р·Р° РїСЂРµРґРµР»С‹ РІР°С€РµР№ СЃРµС‚Рё. РџСЂРёР»РѕР¶РµРЅРёРµ РЅРµ СЃРѕР±РёСЂР°РµС‚ РЅРёРєР°РєСѓСЋ Р»РёС‡РЅСѓСЋ РёРЅС„РѕСЂРјР°С†РёСЋ. РќР° РїРµСЂРІРѕРј Р·Р°РїСѓСЃРєРµ Windows РїРѕРїСЂРѕСЃРёС‚ СЂР°Р·СЂРµС€РµРЅРёРµ РЅР° РґРѕСЃС‚СѓРї Рє СЃРµС‚Рё вЂ” СЌС‚Рѕ РЅРѕСЂРјР°Р»СЊРЅРѕ.</div></div>
+    <div class="faq-item"><button class="faq-q">РќР° С‡С‘Рј РЅР°РїРёСЃР°РЅРѕ РїСЂРёР»РѕР¶РµРЅРёРµ? <span class="arrow">в–ј</span></button><div class="faq-a">Р‘СЌРєРµРЅРґ РЅР° Rust (Tauri v2, axum), С„СЂРѕРЅС‚РµРЅРґ вЂ” React + TypeScript. Р’СЃС‘ РєРѕРјРїРёР»РёСЂСѓРµС‚СЃСЏ РІ РѕРґРёРЅ .exe Р±РµР· Р·Р°РІРёСЃРёРјРѕСЃС‚РµР№.</div></div>
   </div>
 </div>
 </section>
 
 <section class="cta">
-  <h2>Готовы попробовать?</h2>
-  <p>Скачайте — и через 2 минуты класс уже отвечает на вопросы</p>
-  <a href="#download" class="btn-emerald">Скачать для Windows</a>
+  <h2>Р“РѕС‚РѕРІС‹ РїРѕРїСЂРѕР±РѕРІР°С‚СЊ?</h2>
+  <p>РЎРєР°С‡Р°Р№С‚Рµ вЂ” Рё С‡РµСЂРµР· 2 РјРёРЅСѓС‚С‹ РєР»Р°СЃСЃ СѓР¶Рµ РѕС‚РІРµС‡Р°РµС‚ РЅР° РІРѕРїСЂРѕСЃС‹</p>
+  <a href="#download" class="btn-emerald">РЎРєР°С‡Р°С‚СЊ РґР»СЏ Windows</a>
 </section>
 
 <footer>
-  <div>IlyaQlass — викторины для класса</div>
+  <div>IlyaQlass вЂ” РІРёРєС‚РѕСЂРёРЅС‹ РґР»СЏ РєР»Р°СЃСЃР°</div>
   <div class="footer-links">
     <a href="https://github.com/IlyaSigma111/quizkit">GitHub</a>
-    <a href="https://github.com/IlyaSigma111/quizkit/issues">Обратная связь</a>
+    <a href="https://github.com/IlyaSigma111/quizkit/issues">РћР±СЂР°С‚РЅР°СЏ СЃРІСЏР·СЊ</a>
   </div>
 </footer>
 

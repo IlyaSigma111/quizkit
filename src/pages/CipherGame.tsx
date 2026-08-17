@@ -52,7 +52,7 @@ export function CipherGame({ template, onBack }: Props) {
           <div style={{ fontSize: 48, fontWeight: 900, color: 'var(--success)' }}>{score} / {results.length}</div>
           <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 8, marginTop: 8 }}>
             {results.map((r, i) => (
-              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', background: 'var(--bg-input)', borderRadius: 8, fontSize: 13 }}>
+              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', background: 'var(--bg-input)', borderRadius: 'var(--radius)', fontSize: 13 }}>
                 <span>{r.correct ? '✅' : '❌'}</span>
                 <span style={{ flex: 1, color: 'var(--text-secondary)' }}>{r.right}</span>
                 {!r.correct && <span style={{ color: 'var(--danger)', fontSize: 12 }}>Вы: {r.your}</span>}
@@ -74,14 +74,14 @@ export function CipherGame({ template, onBack }: Props) {
           <span style={{ fontSize: 14, color: 'var(--text-secondary)' }}>✅ {score}</span>
         </div>
         <div style={{ fontSize: 13, color: 'var(--text-secondary)', textAlign: 'center' }}>Расшифруйте вопрос (каждая буква = число):</div>
-        <div className="cipher-text" style={{ fontFamily: 'monospace', fontSize: 'clamp(18px,2.5vw,28px)', fontWeight: 700, textAlign: 'center', padding: '20px 16px', background: 'var(--bg-input)', borderRadius: 10, lineHeight: 1.6, letterSpacing: 2 }}>
+        <div className="cipher-text" style={{ fontFamily: 'monospace', fontSize: 'clamp(18px,2.5vw,28px)', fontWeight: 700, textAlign: 'center', padding: '20px 16px', background: 'var(--bg-input)', borderRadius: 'var(--radius)', lineHeight: 1.6, letterSpacing: 2 }}>
           {encrypted}
         </div>
         {phase === 'answer' ? (
           <>
             <input className="cipher-input" value={input} onChange={e => setInput(e.target.value)} placeholder="Ваш ответ..." autoFocus
               onKeyDown={e => e.key === 'Enter' && input.trim() && submit()}
-              style={{ width: '100%', padding: '14px 18px', background: 'var(--bg-input)', border: '2px solid var(--border)', borderRadius: 10, color: 'var(--text)', fontSize: 20, textAlign: 'center', fontFamily: 'inherit' }} />
+              style={{ width: '100%', padding: '14px 18px', background: 'var(--bg-input)', border: '2px solid var(--border)', borderRadius: 'var(--radius)', color: 'var(--text)', fontSize: 20, textAlign: 'center', fontFamily: 'inherit' }} />
             <button className="btn btn-primary" onClick={submit} disabled={!input.trim()} style={{ width: '100%' }}>📤 Ответить</button>
           </>
         ) : (
